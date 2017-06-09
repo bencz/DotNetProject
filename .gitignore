@@ -1,0 +1,9 @@
+DotNetPELib/DotNetPELib/*.nl
+DotNetPELib/DotNetPELib/*.dnl
+DotNetPELib/DotNetPELib/[Oo]bj
+
+DotNetPELib/DotNetPELib_test/*.exe
+DotNetPELib/DotNetPELib_test/[Oo]bj
+
+DotNetPELib/DotNetPELib_test_all_sources/*.exe
+DotNetPELib/DotNetPELib_test_all_sources/[Oo]bj

@@ -1,0 +1,515 @@
+# 1. Introduction
+
+ELENA is a general-purpose, object-oriented, polymorphic language with late binding. It features message dispatching/manipulation, dynamic object mutation, a script engine / interpreter and group object support.
+
+1.1. Namespaces
+---
+
+Any  ELENA program or library consists of modules ( files with .NL extension ) containing classes and symbols. Every member of the module is referred by its fully qualified name which consists of namespace and a proper name separated by an apostrophe. The namespace itself may contain sub elements separated by apostrophes.
+
+All source files (files  with .L extension) located in the same folder are compiled into the corresponding module. A project file ( a file with .PRJ extension ) defines the root namespace and the output type (stand-alone executable, VM executable or a library). The project may produce several modules if it contains the files located in sub folders (the new module namespace consists of the root one and the folder relative path is split by apostrophes).
+
+1.2. Messaging
+---
+
+The main way to interact with objects in ELENA is sending a message. The message 
+name  is structured and consists of a verb, a signature and a parameter counter. 
+The  verb  defines a message action, for example *eval[uate]*, *add*, *set*, *get*, *run*, 
+*seek*  and  so on. There are only limited set of possible verbs. The signature is 
+user defined and describes the message parameters. It can be used to define some 
+custom  action  as well (e.g. *writeLine*, which in fact is *eval&writeLine(1)*). If 
+the signature is not provided the message is considered to be generic and can be
+qualified (for example by dispatching).
+
+If the object wants to handle the message it has to contain the method with the same name. If no method mapping was found the flow is considered to be broken and the control goes to the next alternative flow (exception handler) or the program is stopped.
+
+The simple code to send a message looks like this:
+
+    console write:"Hello World".
+
+Note: *write* is a generic message; a literal constant is a parameter. A dot is a statement terminator.
+
+Several messages can be send in one statement, the parameter itself may be result of object interactions as well:
+
+    console write "2 + 2 =" write:(2 add:2).
+
+We could use operators to have the shorter code:
+
+    console << "2+2=" << 2 + 2.
+
+Note: In most cases *"<<"* is a synonym to *write* and *"+"* to *add*.
+
+Several parameters can be passed in the message as well:
+
+    console write:"Hello World" &paddingLeft:10 &with:#32
+
+Ampersand is used to indicate that the signature has several arguments (subjects). The actual 
+message name is *write&paddingLeft&with(2)*.
+
+The generic message can have several parameters as well:
+
+    console writeLine:"a+b=":(a + b).
+
+
+1.3. Classes, Symbols, Nested classes and Closures
+---
+
+ELENA is an object-oriented language. To create a program we have	 to declare new classes and symbols.
+
+A class encapsulates data (fields) with code (methods) to access it. In most cases it is not possible
+to get a direct access to the class content. Usually the field refers to another class and so on
+until we reach "primitive" ones which content are considered as raw data (e.g. numeric or literal values).
+
+Classes form the inheritance tree. There is the common super class - system'Object.
+ELENA does not support multiple inheritance, though it is possible to inherit the code using a dispatch handler 
+(mixins / group objects). When the parent is not provided the class inherits directly system'Object 
+(the super class).
+
+A class instance can be created with the help of the special methods - constructors. A constructor
+is used mostly to initialize the class fields. There are special types of classes which do not have constructors
+and can be used directly (nested classes, extensions, closures). A class itself is considered as a stateless
+object.
+
+    class BaseClass
+    {
+      object theField1.
+      object theField2.
+      
+      field1 = theField1.
+    
+      field2 = theField2.
+    
+    }
+    
+    class DerivedClass :: BaseClass
+    {
+      constructor new &field1:object1 &field2:object2
+      [  
+         theField1 := object1.
+         theField2 := object2.
+      ]
+    
+      add &field1:object1 &field2:object2
+         = MyClass new &field1:(theField1 + object1) &field2:(theField2 + object1).
+    }
+    
+To create a class instance we have to send a message (usually new) to its class.
+
+    var anObject := DerivedClass new &field1:1 &field2:1.
+
+A symbol is a named expression and can be used to declare initialized objects, constants, reusable expressions
+and so on.
+
+    const N = 1. 
+ 
+    symbol TheClass = DerivedClass new &field1:N &field2:N.
+
+A static symbol is the named expression which state is preserved. There could be only one instance of static symbol.
+
+    static SingletonClass = DerivedClass new &field1:0 &field2:0.
+
+Nested classes can be declared in the code and used directly.
+
+    class ClassHelper =
+    {
+       sumOf:object1:object2
+          = anObject1 add &field1:object1 &field2:object2.
+    }.
+    
+    ...
+    
+    var aSum := ClassHelper sumOf:anObject1:anObject2.
+
+Closure is a special case of the nested class and consists of the code enclosed into square brackets
+(with optional parameter declaration)
+
+    str run &each:
+       ch [ console write:ch. ].
+
+
+1.4. Code blocks
+---
+
+ELENA code block consists of one or more declarations and statements. The block is enclosed in square brackets and may contain nested sub code blocks. The statement terminator is a dot.
+
+    control run &int:0 &int:MAX &every: (&int:i)
+    [
+        pi += -1.0r power &int:i / (2*i+1) * 4.
+    ].
+
+    console writeLine:pi.
+    console writeLine:"Time elapsed in msec:":(aDiff milliseconds).
+
+When a method should return a result (other than $self) return statement is used. It should be the last statement in the block.
+
+    [
+        ...
+    
+        ^ aRetVal / anArray length.
+    ]
+
+If the code block contains only return statement the simplified syntax can be used:
+
+    Number = convertor toReal:theValue.    
+
+or there is an alternative block expression
+
+    [ convertor toReal:theValue ]
+
+Note: it should not end with the terminator symbol
+
+It is possible to declare the block variable and assigns the value to it. The variable name must be unique within the code block scope.
+
+    var aRetVal := Integer new:0.
+
+
+1.5. Conditional branching
+--
+Conditional branching is implemented with a help of special Boolean symbols (system’true and system’false). All conditional operations should return these symbols as a result.
+
+There are three branching methods : _if[1]_ , _if[2]_, _ifnot[1]_
+
+    (m == 0) if:
+    [
+       r append:(n + 1).
+    ]
+    : [
+       r append:(m + n).
+    ].
+
+This expression can be written using special operators
+
+    (m == 0) 
+      ? [ r append:(n + 1). ]
+      ! [ r append:(m + n). ].
+
+We could omit true or else part
+
+    (m == 0) 
+       ! [ m / n ].
+
+Boolean symbols supports basic logical operations (AND, OR, XOR and NOT), so several conditions can be checked
+
+    ((aChar >= 48) and:(aChar < 58))
+    ? [
+        theToken += aChar.
+    ]
+    ! [
+       Exception new:"Invalid expression" raise.
+    ]
+
+Note that in this case both condition will be evaluated even if the first one is false. If we want to use short-circuit evaluation, lazy expression should be used:
+
+    ((x >= 0)and:[ array@x != 0]) ?
+    [
+        ...
+    ]
+
+A switch statement can be implemented using => operator
+
+    ^ aBulls =>
+         -1 ? [ console writeLine:"Not a valid guess.". ^ true. ]
+          4 ? [ 
+                  console writeLine:"Congratulations! You have won!". 
+                  ^ false. 
+              ]
+            ! [
+                 theAttempt += 1.
+                 
+                 console writeLine:
+                      "Your Score is " : aBulls 
+                      : " bulls and " : aCows : " cows".
+                 
+                 ^ true.
+            ].
+
+1.6. Hello world program
+---
+
+To write a simple console application, we have to declare the program main symbol - an object handling _eval[0]_ message. The simplest way is to declare a nested class:
+
+    program =
+    {
+        eval
+        [
+            system'console writeLine:"Hello World" .
+        ] 
+    }.
+
+A nested class containing only one _eval_ method can be declared as a closure:
+
+    program =
+    [
+        system'console writeLine:"Hello World" .
+    ].
+
+Finally we may import system namespace:
+
+    #import system.
+
+    program =
+    [
+        console writeLine:"Hello World" .
+    ].
+
+# 2. Interactions
+
+# 3. Lexical Structure
+--
+
+An ELENA module consists of one or more source files. A source file is an ordered sequence of Unicode characters (usually encoded with the UTF-8 encoding).
+
+There are several sequences of input elements: white space, comments and tokens. The tokens are the identifiers, keywords, literals, operators 
+and punctuators.
+
+The raw input stream of Unicode characters is reduced by ELENA DFA into a sequence of <nowiki>&lt;</nowiki>input elements<nowiki>&gt;</nowiki>. 
+
+	<input> :
+			{ <input element> }*
+		
+	<input element> :
+			<white space>
+			<comment>
+			<token>
+			
+	<token> :
+			<identifier>
+			<full identifier>
+			<local identifier>
+			<keyword>
+			<literal>
+			<operator-or-punctuator>
+
+Of these basic elements, only tokens are significant in the syntactic grammar of an ELENA program.
+
+2.1. White space
+--
+ELENA White space are a space, a horizontal tab and line terminators. They are used to separate tokens.
+
+	<white space> :
+		SP (space)
+		HT (horizontal tab)
+		CR (return)
+		LF (new line)
+	
+2.2. Comments	
+--
+
+ELENA uses c++-style comments:
+
+   /* block comment */
+
+   // end-of-line comment
+
+	<comment> :
+		<block comment>
+		<end-of-line comment>
+		
+	<block comment> :
+		'/' '*' <block comment tail>
+		
+	<end-of-line comment> :	
+		'/' '/' { <not line terminator> }*
+		
+	<block comment tail> :
+		'*' <block comment star tail> 
+                <not star> <block comment tail>
+		
+	<block comment star tail> :
+		'/' 
+                '*' <block comment star tail> 
+                <neither star nor slash> <block comment tail>
+		
+	<not star> :
+		any Unicode character except '*'
+		
+	<neither star nor slash> :
+		any Unicode character except '*' and '/'
+
+	<not line terminator> :
+		any symbol except LR and CF
+
+ELENA comments do not nest. Comments do not occur inside string literals
+
+2.3. Identifiers
+--
+
+An identifier is a sequence of letters, underscore and digits starting with letter or underscore. An identifier length is restricted 
+in the current compiler design (maximal 255 characters)
+
+	<identifier> :
+		<letter> { <letter or digit> }*
+		
+	<letter> :
+		Unicode character except white space, punctuator or operator
+		'_'
+		
+	<letter or digit> :
+		<letter>
+		Digit 0-9
+		
+ELENA identifiers are case sensitive.
+
+2.4. Full identifiers
+--
+
+A full identifier is a sequence of identifiers separated with "'" characters. It consists of a namespace and a proper name.  
+A full identifier length is restricted in the current compiler design (maximal 255 characters)
+
+	<full identifier> :
+		[ <name space> ]? "'" <identifier>		
+		
+	<name space> :
+		<identifier> [ "'" { <identifier> } ]*
+		
+2.5. Local identifiers
+--
+
+A local identifier is a sequence of letters, underscore and digits starting with '$' character. A local identifier length is restricted 
+in the current compiler design (maximal 255 characters)
+
+	<local identifier> :
+		'$' <identifier>
+		
+2.6. Keywords
+--
+
+A keyword is a sequence of letters starting with '#' character. Currently only following keywords are used though others reserved for future use: 
+<nowiki>#class, #symbol, #static, #field, #method, #constructor, #var, #loop, #define, #type, #throw, #break.</nowiki> 
+Keywords can be placed only in the beginning 
+of the statement.
+	
+	<local identifier> :
+		'#' { <letter> }+
+	
+	<letter> :
+		Unicode character
+
+2.7. Literals
+---
+
+A literal is the source code representation of a value.
+
+	<literal> :
+		<integer>
+		<float>
+		<string>
+		
+2.7.1. Integer literals
+----
+
+An integer literal may be expressed in decimal (base 10) or hexadecimal(16).
+
+	<integer> :
+		<decimal integer>
+		<hexadecimal integer>
+		
+	<decimal integer> :
+		[ <sign> ] { <digit> }+
+
+	<sign> :
+		"+"
+		"-"
+		
+	<digit> :
+		digit 0-9
+		
+	<hexadecimal integer> :
+		<digit> <digit or hexdigit>* 'h'
+		
+	<digit or hexdigit> :
+		<digit>		
+		one of following character - a b c d e f A B C D E F
+		
+2.7.2. Floating-point literals
+----
+
+A floating-point literal has the following parts: a whole-number part, a decimal point, and fractional part, an exponent.  The exponent, if present, 
+is indicated by the Unicide letter 'e' or 'E' followed by an optionally signed integer.
+
+At least one digit, in either the whole number or the fraction part, and a decimal point or an exponent are required. All other parts are optional.
+
+	<float> :
+		{ <digit> }* '.' { <digit> }* [ <exponent> ] 'r'
+		{ <digit> }+ <exponent> 'r'
+		
+	<digit> :
+		digit 0-9
+
+	<exponent> :
+		<exponent sign> <integer>
+		
+	<exponent sign> :
+		either 'E' or 'e'
+		
+	<integer> :
+		<sign>? <digit>+
+		
+	<sign> :
+		"+"
+		"-"
+
+Real literals are represented with 64-bit double-precision binary floating-point formats.
+
+2.7.3. String literal
+----
+
+A string literal consists of zero or more characters enclosed in double quotes. Characters may be represented by escape sequences.
+
+	<string> : 
+		'"' <string tail> '"'
+		
+	<string tail> :
+		<string character> { <string tail> }*
+		<escape sequence>  { <string tail> }*
+		'%' '%' { <string tail> }*
+		'"' '"' { <string tail> }*
+		
+	<string character> :
+		any character except CR or LF or '"'
+		
+2.7.4. String literal escape sequences
+----
+
+The string literal escape sequences allow for the representation of some non-graphic character as well as the double quote and percent character.
+
+	<escape sequence> :
+		'%' <decimal escape>
+		
+	<decimal escape> :
+		{ <digit> }+
+		<alert>
+		<backspace>
+		<horizontal tab>
+		<carriage return>
+		<new line>
+		
+	<digit> :
+		digit 0-9
+    
+	<alert> :
+		'a'
+    
+	<backspace> :
+		'b'
+    
+	<horizontal tab> :
+		't'
+    
+	<carriage return> :
+		'r'
+    
+	<new line> :
+		'n'
+		
+2.8. Operators and punctuators
+---
+
+There are several kinds of operators and punctuators. Operators are short-cut form of messages taking one operand. Punctuators are for grouping and separating. 
+
+	<operator-or-punctuator> : one of
+		'(', ')', '[', ']', '<', '>', '{', '}', 
+		'.', ',', '|', ':', '::', '=', '=>', 
+		'+', '-', '*', '/', '+=', '-=', '*=', '/=', 
+		'||', '&&', '^^', '<<', '>>', ':='
+

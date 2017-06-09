@@ -1,0 +1,74 @@
+pusha copym aloadsi :=0 => pusha copym nop;
+pusha aloadsi := 0 => pusha nop;
+pushn asavesi := 0 => pusha nop;
+pushn aloadfi asavesi := 0 => nop aloadfi pusha;
+pushn acopyr asavesi := 0 => nop acopyr pusha;
+asavesi := 0 copym aloadsi :=0 => asavesi copym nop;
+acopyb acopyf => nop acopyf;
+acopyb aloadfi => nop aloadfi;
+acopyr aloadfi => nop aloadfi;
+acopyb bcopya => acopyb nop;
+acopyb pusha acopyr => pushb nop acopyr;
+acopyb bcopyf dcopy nsave acopyb => nop bcopyf dcopy nsave acopyb;
+acopyb bcopyf acopyf => nop bcopyf acopyf;
+
+bcopya acopyb => bcopya nop;
+acopyr acopyb => nop acopyb;
+acopyr acopyr => nop acopyr;
+acopyr pusha acopyr => pushr nop acopyr;
+acopyr pusha pushr acopyr => pushr nop pushr acopyr;
+pushr popb => bcopyr nop;
+pushr popa => acopyr nop;
+pushfi popb => bloadfi nop;
+pushfi popa => aloadfi nop;
+pushsi popb => bloadsi nop;
+pushsi popa => aloadsi nop;
+asavesi := 1 aloadsi := 1 => asavesi nop;
+pushfi pop => nop nop;
+pusha popa => nop nop;
+pushb popa => acopyb nop;
+acopyf bcopya newn => bcopyf nop newn;
+acopyr bcopya newn => bcopyr nop newn;
+acopyf bcopya acopyr => bcopyf nop acopyr;
+acopyf bcopya aloadfi => bcopyf nop aloadfi;
+acopyf bcopya aloadsi => bcopyf nop aloadsi;
+acopyb asavesi aloadsi => nop bsavesi aloadsi;
+acopyf bcopya dcopy nsave acopyb => bcopyf nop dcopy nsave acopyb;
+
+nequal selectr elser ! => nequal nop ifn = 0;
+nequal selectr elser ~ => nequal nop elsen = 0;
+nless selectr elser ! => nless nop ifn = 0;
+nless selectr elser ~ => nless nop elsen = 0;
+
+nless selectr ifr ! => nless nop elsen = 0;
+nless selectr ifr ~ => nless nop ifn = 0;
+nequal selectr ifr ! => nequal nop elsen = 0;
+nequal selectr ifr ~ => nequal nop ifn = 0;
+
+lequal selectr elser ! => lequal nop ifn = 0;
+lequal selectr elser ~ => lequal nop elsen = 0;
+lless selectr elser ! => lless nop ifn = 0;
+lless selectr elser ~ => lless nop elsen = 0;
+
+lless selectr ifr ! => lless nop elsen = 0;
+lless selectr ifr ~ => lless nop ifn = 0;
+lequal selectr ifr ! => lequal nop elsen = 0;
+lequal selectr ifr ~ => lequal nop ifn = 0;
+
+requal selectr elser ! => requal nop ifn = 0;
+requal selectr elser ~ => requal nop elsen = 0;
+rless selectr elser ! => rless nop ifn = 0;
+rless selectr elser ~ => rless nop elsen = 0;
+
+rless selectr ifr ! => rless nop elsen = 0;
+rless selectr ifr ~ => rless nop ifn = 0;
+requal selectr ifr ! => requal nop elsen = 0;
+requal selectr ifr ~ => requal nop ifn = 0;
+
+xselectr elser ! => nop elser = 0;
+xselectr elser ~ => nop ifr = 0;
+
+// m = $self
+open pusha aloadfi := 1 close quitn => nop nop nop nop quitn;
+// m = const
+open pusha acopyr close quitn => nop nop acopyr nop quitn;
