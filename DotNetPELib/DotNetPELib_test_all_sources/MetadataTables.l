@@ -1,46 +1,46 @@
-#import system.
-#import system'collections.
+import system.
+import system'collections.
+
+const module = 00h.
+const typeRef = 01h.
+const typeDef = 02h.
+const field = 04h.
+const methodDef = 06h.
+const param = 08h.
+const interfaceImpl = 09h.
+const memberRef = 0Ah.
+const constant = 0Bh.
+const customAttribute = 0Ch.
+const fieldMarshal = 0Dh.
+const declSecurity = 0Eh.
+const classLayout = 0Fh.
+const fieldLayout = 10h.
+const standAloneSig = 11h.
+const eventMap = 12h.
+const event = 14h.
+const propertyMap = 15h.
+const property = 17h.
+const methodSemantics = 18h.
+const methodImpl = 19h.
+const moduleRef = 1Ah.
+const typeSpec = 1Bh.
+const implMap = 1Ch.
+const fieldRVA = 1Dh.
+const assembly = 20h.
+const assemblyProcessor = 21h.
+const assemblyOS = 22h.
+const assemblyRef = 23h.
+const assemblyRefProcessor = 24h.
+const assemblyRefOS = 25h.
+const file = 26h.
+const exportedType = 27h.
+const manifestResource = 28h.
+const nestedClass = 29h.
+const notUsed = 3fh.
 
 extension MetadataTables
 {
-    module = 00h.
-    typeRef = 01h.
-    typeDef = 02h.
-    field = 04h.
-    methodDef = 06h.
-    param = 08h.
-    interfaceImpl = 09h.
-    memberRef = 0Ah.
-    constant = 0Bh.
-    customAttribute = 0Ch.
-    fieldMarshal = 0Dh.
-    declSecurity = 0Eh.
-    classLayout = 0Fh.
-    fieldLayout = 10h.
-    standAloneSig = 11h.
-    eventMap = 12h.
-    event = 14h.
-    propertyMap = 15h.
-    property = 17h.
-    methodSemantics = 18h.
-    methodImpl = 19h.
-    moduleRef = 1Ah.
-    typeSpec = 1Bh.
-    implMap = 1Ch.
-    fieldRVA = 1Dh.
-    assembly = 20h.
-    assemblyProcessor = 21h.
-    assemblyOS = 22h.
-    assemblyRef = 23h.
-    assemblyRefProcessor = 24h.
-    assemblyRefOS = 25h.
-    file = 26h.
-    exportedType = 27h.
-    manifestResource = 28h.
-    nestedClass = 29h.
-    notUsed = 3fh.
-    
-    isDefined &int:aType
+    isDefined int:aType
     [
         (aType == 00h)? [ ^true. ].
         (aType == 01h)? [ ^true. ].
@@ -83,7 +83,7 @@ extension MetadataTables
 
 extension MetadataTableCreator
 {
-    create &metadatatables:aTable
+    create metadatatables:aTable
     [
         (aTable == MetadataTables assembly)? [ ^AssemblyTable new. ].
 //        (aTable == MetadataTables assemblyOS)? [ ^AssemblyOSTable new. ].
@@ -141,9 +141,9 @@ class AssemblyTable :: TableBase
     int theName. // index into String heap
     int theCulture. // index into String heap
     
-    readData &bytearray:data &int:offset
+    readData bytearray:data int:offset
     [
-        $self readData &bytearray:data &int:offset.
+        $self readData bytearray:data int:offset.
         
         theHashAlgId := $self readInt32.
         theMajorVersion := $self readInt16.
@@ -169,8 +169,8 @@ class AssemblyRefOSTable :: TableBase
     int theOSMinorVersion. // 4 byte constant
     int theAssemblyRef. // index into the AssemblyRef table
     
-    constructor new &bytearray:data &int:offset
-        <= new &bytearray:data &int:offset;
+    constructor new bytearray:data int:offset
+        <= new bytearray:data int:offset;
     [
         $self readData.
     ]

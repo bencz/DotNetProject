@@ -1,44 +1,44 @@
-#import system.
-#import system'text.
-#import system'collections.
+import system.
+import system'text.
+import system'collections.
 
 extension Util
 {
-    getByte &bytearray:data &int:offset
+    getByte bytearray:data int:offset
     [
         ^(data@offset).
     ]
     
-    getInt16 &bytearray:data &int:offset
+    getInt16 bytearray:data int:offset
     [
-        ^ $self getByteArray &bytearray:data &int:offset &int:16.
+        ^ $self getByteArray bytearray:data int:offset int:16.
 //        int b0 := data@offset.
 //        int b1 := data@(offset + 1).
-//        ^((b0 + (b1 shift &int:-8)) toShort).
+//        ^((b0 + (b1 shift int:-8)) toShort).
     ]
     
-    getInt24 &bytearray:data &int:offset
+    getInt24 bytearray:data int:offset
     [
-        ^ $self getByteArray &bytearray:data &int:offset &int:24.
+        ^ $self getByteArray bytearray:data int:offset int:24.
 //        int b0 := data@offset.
 //        int b1 := data@(offset + 1).
 //        int b2 := data@(offset + 2).
-//        ^(b0 + (b1 shift &int:-8) + (b2 shift &int:-16)).
+//        ^(b0 + (b1 shift int:-8) + (b2 shift int:-16)).
     ]
     
-    getInt32 &bytearray:data &int:offset
+    getInt32 bytearray:data int:offset
     [
-//       ^ $self getByteArray &bytearray:data &int:offset &int:32.
+//       ^ $self getByteArray bytearray:data int:offset int:32.
         int b0 := data@offset.
         int b1 := data@(offset + 1).
         int b2 := data@(offset + 2).
         int b3 := data@(offset + 3).
-        ^(b0 + (b1 shift &int:-8) + (b2 shift &int:-16) + (b3 shift &int:-24)).
+        ^((b0) + (b1 << 8) + (b2 << 16) + (b3 << 24)).
     ]
     
-    getInt64 &bytearray:data &int:offset
+    getInt64 bytearray:data int:offset
     [
-        ^ $self getByteArray &bytearray:data &int:offset &int:64.
+        ^ $self getByteArray bytearray:data int:offset int:64.
         
 //        int b0 := data@offset.         // 0xd8
 //        int b1 := data@(offset + 1).   // 0x29
@@ -49,113 +49,113 @@ extension Util
 //        int b6 := data@(offset + 6).   // 0x00
 //        int b7 := data@(offset + 7).   // 0x00
 //        
-//        var x1 := (b1 shift &int: -8).  // expected: 0x0000000000002900 -> result: 0x1480
-//        var x2 := (b2 shift &int:-16).  // expected: 0x0000000000000000 -> result: 0x0000
-//        var x3 := (b3 shift &int:-24).  // expected: 0x0000000000000000 -> result: 0x0000
-//        var x4 := (b4 shift &int:-32).  // expected: 0x0000004f00000000 -> result: 0x80000000
-//        var x5 := (b5 shift &int:-40).  // expected: 0x0000000000000000 -> result: 0x0000
-//        var x6 := (b6 shift &int:-48).  // expected: 0x0000000000000000 -> result: 0x0000
-//        var x7 := (b7 shift &int:-56).  // expected: 0x0000000000000000 -> result: 0x0000
+//        var x1 := (b1 shift int: -8).  // expected: 0x0000000000002900 -> result: 0x1480
+//        var x2 := (b2 shift int:-16).  // expected: 0x0000000000000000 -> result: 0x0000
+//        var x3 := (b3 shift int:-24).  // expected: 0x0000000000000000 -> result: 0x0000
+//        var x4 := (b4 shift int:-32).  // expected: 0x0000004f00000000 -> result: 0x80000000
+//        var x5 := (b5 shift int:-40).  // expected: 0x0000000000000000 -> result: 0x0000
+//        var x6 := (b6 shift int:-48).  // expected: 0x0000000000000000 -> result: 0x0000
+//        var x7 := (b7 shift int:-56).  // expected: 0x0000000000000000 -> result: 0x0000
 //        
-//        bytearray aBuffer := ByteArray new &int:16.
-//        byteArrayHelper write &bytearray:aBuffer &int:0 &int:(b0 + x1).
-//        byteArrayHelper write &bytearray:aBuffer &int:2 &int:(x2 + x3).
-//        byteArrayHelper write &bytearray:aBuffer &int:4 &int:(x4 + x5).
-//        byteArrayHelper write &bytearray:aBuffer &int:6 &int:(x6 + x7).
+//        bytearray aBuffer := ByteArray new int:16.
+//        byteArrayHelper write bytearray:aBuffer int:0 int:(b0 + x1).
+//        byteArrayHelper write bytearray:aBuffer int:2 int:(x2 + x3).
+//        byteArrayHelper write bytearray:aBuffer int:4 int:(x4 + x5).
+//        byteArrayHelper write bytearray:aBuffer int:6 int:(x6 + x7).
 //        
 //        long result := 0.
-//        byteArrayHelper read &bytearray:aBuffer &int:0 &vlong:result.
+//        byteArrayHelper read bytearray:aBuffer int:0 &vlong:result.
 //        
 //        ^result.
         
         // expected return: 0x0000004f000029d8
-        //^(b0 + (b1 shift &int:-8) + (b2 shift &int:-16) + (b3 shift &int:-24) + 
-        //       (b4 shift &int:-32) + (b5 shift &int:-40) + (b6 shift &int:-48) + (b7 shift &int:-56)).
+        //^(b0 + (b1 shift int:-8) + (b2 shift int:-16) + (b3 shift int:-24) + 
+        //       (b4 shift int:-32) + (b5 shift int:-40) + (b6 shift int:-48) + (b7 shift int:-56)).
     ]
     
-    getBytes &bytearray:data &int:offset 
+    getBytes bytearray:data int:offset 
     [
         int aSize := 0.
-        #loop((data@(offset + aSize)) != 0) ?[ aSize += 1. ].
-        ^ $self getBytes &bytearray:data &int:offset &int:aSize.
+        while((data@(offset + aSize)) != 0) [ aSize := aSize + 1. ].
+        ^ $self getBytes bytearray:data int:offset int:aSize.
     ]
     
-    getBytes &bytearray:data &int:offset &int:size
+    getBytes bytearray:data int:offset int:size
     [
-        ^ByteArray new &int:offset &int:size &bytearray:data.
+        ^ByteArray new int:offset int:size bytearray:data.
     ]
     
-    getASCIIString &long:value
+    getASCIIString long:value
     [
         bytearray aBuffer := ByteArray new:8.
-        byteArrayHelper write &bytearray:aBuffer &int:0 &long:value.
-        //^ LiteralValue $new &int:0 &int:8 &bytearray:aBuffer.
-        ^ UTF8Encoder toLiteral &int:0 &int:8 &bytearray:aBuffer. // Change to use "literal" insented of "UTF8"
+        byteArrayHelper write bytearray:aBuffer int:0 long:value.
+        ^ UTF8Encoder toLiteral int:0 int:8 bytearray:aBuffer. // Change to use "literal" insented of "UTF8"
     ]
     
-    isZero &bytearray:data &int:aOffset &int:size
+    isZero bytearray:data int:aOffset int:size
     [
         int offset := aOffset.
         int i := 0.
-        #loop(i < size)?
+        while(i < size)
         [
             (data@(offset + i) != 0) ? [ ^false. ].
-            i += 1.
+            i := i + 1.
         ].
         ^true.
     ]
     
-    pad &int:n
+    pad int:n
     [
         int a := n && 3.
-        (a == 0) 
-            ? [ ^n. ]
-            ! [ ^(n + 4 - a). ].
+        ^(a == 0)iif:(n):(n + 4 - a).
+//        (a == 0) 
+//            ? [ ^n. ]
+//            ! [ ^(n + 4 - a). ].
     ]
     
-    getDataSize &bytearray:data &int:offset
+    getDataSize bytearray:data int:offset
     [
         var ret := DoubleInt new.
         byte b0 := data@offset.
         
-        ((b0 && 0e0h) == 0c0h)
-        ? [
-                ret setA &int:4.
-                ret setB &int:(((b0 && 01fh) << 24) + (data@(offset + 1) << 16) + (data@(offset + 2) << 8) + data@(offset + 3)).
-                ^ret.
-          ].
-        ((b0 && 0c0h) == 80h)
-        ? [
-                ret setA &int:2.
-                ret setB &int:(((b0 && 3fh) << 8) + data@(offset + 1)).
-                ^ret.
-          ].
+        if((b0 && 0e0h) == 0c0h)
+        [
+            ret setA int:4.
+            ret setB int:(((b0 && 01fh) << 24) + (data@(offset + 1) << 16) + (data@(offset + 2) << 8) + (data@(offset + 3))).
+            ^ret.
+        ].
+        if((b0 && 0c0h) == 80h)
+        [
+            ret setA int:2.
+            ret setB int:(((b0 && 3fh) << 8) + (data@(offset + 1))).
+            ^ret.
+        ].
         
-        ret setA &int:1.
-        ret setB &int:b0.
+        ret setA int:1.
+        ret setB int:b0.
         ^ret.
     ]
     
     // ---------------------------------------------------------
     // Internal usage class method
     // ---------------------------------------------------------
-    getByteArray &bytearray:data &int:offset &int:aDataSize
+    getByteArray bytearray:data int:offset int:aDataSize
     [
         int size := aDataSize / 2.
-        bytearray aBuffer := ByteArray new &int:size.
+        bytearray aBuffer := ByteArray new int:size.
         
         int i := size / 4.
-        #loop(i >= 0)?
+        while(i >= 0)
         [            
             byte val := data@(offset + i).
             aBuffer@i := val.
-            i -= 1.
+            i := i - 1.
         ].
         
         
         
 //        int aSize := dataSize / 2.
-//        bytearray aBuffer := ByteArray new &int:aSize.
+//        bytearray aBuffer := ByteArray new int:aSize.
 //        list aList := List new.    
 //        
 //        int i := 0.
@@ -169,28 +169,28 @@ extension Util
 //        i := 0.
 //        #loop(i < aList length)?
 //        [
-//            byteArrayHelper write &bytearray:aBuffer &int:i &int:((aList@i) + (aList@(i+1))).
+//            byteArrayHelper write bytearray:aBuffer int:i int:((aList@i) + (aList@(i+1))).
 //            i += 2.
 //        ].
 //        
         aDataSize => 64 [
                             long aRetValue := 0.
-                            byteArrayHelper read &bytearray:aBuffer &int:0 &vlong:aRetValue.
+                            byteArrayHelper read bytearray:aBuffer int:0 vlong:aRetValue.
                             ^aRetValue.
                         ];
                      32 [
                             int aRetValue := 0.
-                            byteArrayHelper read &bytearray:aBuffer &int:0 &vint:aRetValue.
+                            byteArrayHelper read bytearray:aBuffer int:0 vint:aRetValue.
                             ^aRetValue.                                                     
                         ];
                      24 [
                             int aRetValue := 0.
-                            byteArrayHelper read &bytearray:aBuffer &int:0 &vint:aRetValue.
+                            byteArrayHelper read bytearray:aBuffer int:0 vint:aRetValue.
                             ^aRetValue.   
                         ];
                      16 [
                             short aRetValue := 0.
-                            byteArrayHelper read &bytearray:aBuffer &int:0 &vshort:aRetValue.
+                            byteArrayHelper read bytearray:aBuffer int:0 vshort:aRetValue.
                             ^aRetValue.   
                         ].   
     ]

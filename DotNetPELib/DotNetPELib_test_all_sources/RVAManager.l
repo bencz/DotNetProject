@@ -1,6 +1,6 @@
-#import system.
-#import system'collections.
-#import extensions.
+import system.
+import system'collections.
+import extensions.
 
 class RVAManager
 {
@@ -13,7 +13,7 @@ class RVAManager
         addrs_v := List new.
     ]
     
-    setAddress &int:physical &int:virt
+    setAddress int:physical int:virt
     [
         ((physical == 0) || (virt == 0))! 
         [
@@ -22,13 +22,13 @@ class RVAManager
         ].
     ]
     
-    convertToPhysical &int:virt
+    convertToPhysical int:virt
     [
         int p := -1.
         int max := 0.
         
         int cnt := 0.
-        #loop(cnt < addrs_v length)?
+        while(cnt < addrs_v length)
         [
             int v := (addrs_v@cnt) toInt.
             ((max < v) && (v <= virt))?
@@ -36,20 +36,20 @@ class RVAManager
                 p := cnt.
                 max := v. 
             ].
-            cnt += 1.
+            cnt := cnt + 1.
         ].
         (p >= 0) 
             ?[ ^(virt - max + ((addrs_p@p) toInt)). ] 
             ![ ^virt. ].
     ]
     
-    convertToVirtual &int:physical
+    convertToVirtual int:physical
     [
         int p := -1.
         int max := 0.
         
         int cnt := 0.
-        #loop(cnt < addrs_p length)?
+        while(cnt < addrs_p length)
         [
             int v := (addrs_p@cnt) toInt.
             ((max < v) && (v <= physical))?
@@ -57,7 +57,7 @@ class RVAManager
                 p := cnt.
                 max := v.
             ].
-            cnt += 1.
+            cnt := cnt + 1.
         ].
         
         (p >= 0) 
@@ -68,7 +68,7 @@ class RVAManager
 
 extension RVAManagerHelper
 {
-    getAddress &long:rva
+    getAddress long:rva
     [
         ^((rva && 0FFFFFFFFh) toInt).
     ]

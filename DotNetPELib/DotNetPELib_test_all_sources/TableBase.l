@@ -1,16 +1,16 @@
-#import system.
+import system.
 
 class TableBase :: HeaderBase
 {
     int thePointer.
     int theIndex.
     //literal theName.
-    object(TableBase) theParentTable.
-    object(list) theChildren.
+    object theParentTable.
+    object theChildren.
     object theTag.
-    object(IndexManager) theIndexManager.
+    object theIndexManager.
     
-    readData &bytearray:data &int:offset
+    readData bytearray:data int:offset
     [
         
         thePointer := theOffset.
@@ -29,15 +29,15 @@ class TableBase :: HeaderBase
     
     readInt16
     [
-        short ret := Util getInt16 &bytearray:theData &int:thePointer.
-        thePointer += 2.
+        short ret := Util getInt16 bytearray:theData int:thePointer.
+        thePointer := thePointer + 2.
         ^ ret.
     ]
     
     readInt32
     [
-        int ret := Util getInt32 &bytearray:theData &int:thePointer.
-        thePointer += 4.
+        int ret := Util getInt32 bytearray:theData int:thePointer.
+        thePointer := thePointer + 4.
         ^ ret.
     ]
     
@@ -62,7 +62,7 @@ class TableBase :: HeaderBase
             ! [ ^$self readInt16. ].
     ]
     
-    setIndexManager &indexManager:aIdxManager
+    setIndexManager indexManager:aIdxManager
     [
         theIndexManager := aIdxManager.
     ] 

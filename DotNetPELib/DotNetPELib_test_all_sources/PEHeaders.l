@@ -1,5 +1,5 @@
-#import system.
-#import system'text.
+import system.
+import system'text.
 
 // -----------------------------------------------------------------
 // Immediately after the PE signature is the PE File header
@@ -15,21 +15,21 @@ class PEFileHeader :: HeaderBase
     short theOptionalHeaderSize. // Size of the optional header, the format is described below.
     short theCharacteristics. // Flags indicating attributes of the file, see Characteristics
     
-    constructor new &bytearray:data &int:offset
-        <= new &bytearray:data &int:offset;
+    constructor new bytearray:data int:offset
+        <= new bytearray:data int:offset;
     [
         $self readData.
     ]
         
     readData
     [
-        theMachine := $self readInt16 &int:0.
-        theNumberOfSections := $self readInt16 &int:2.
-        theTimeDateStamp := $self readInt32 &int:4.
-        thePointerToSymbolTable := $self readInt32 &int:8.
-        theNumberOfSymbols := $self readInt32 &int:12.
-        theOptionalHeaderSize := $self readInt16 &int:16.
-        theCharacteristics := $self readInt16 &int:18.
+        theMachine := $self readInt16 int:0.
+        theNumberOfSections := $self readInt16 int:2.
+        theTimeDateStamp := $self readInt32 int:4.
+        thePointerToSymbolTable := $self readInt32 int:8.
+        theNumberOfSymbols := $self readInt32 int:12.
+        theOptionalHeaderSize := $self readInt16 int:16.
+        theCharacteristics := $self readInt16 int:18.
     ]
     
     numberOfSections = theNumberOfSections.
@@ -66,23 +66,23 @@ class PEHeaderStandardFields :: HeaderBase
     int theBaseOfCode. // RVA of the code section, always 0x00400000 for exes and 0x10000000 for DLL.
     int theBaseOfData. // RVA of the data section.
     
-    constructor new &bytearray:data &int:offset
-        <= new &bytearray:data &int:offset;
+    constructor new bytearray:data int:offset
+        <= new bytearray:data int:offset;
     [
         $self readData.
     ]
         
     readData
     [
-        theMagic := $self readInt16 &int:0.
-        theLMajor := $self readByte &int:2.
-        theLMinor := $self readByte &int:3.
-        theCodeSize := $self readInt32 &int:4.
-        theInitializedDataSize := $self readInt32 &int:8.
-        theUninitializedDataSize := $self readInt32 &int:12.
-        theEntryPointRVA := $self readInt32 &int:16.
-        theBaseOfCode := $self readInt32 &int:20.
-        theBaseOfData := $self readInt32 &int:24.
+        theMagic := $self readInt16 int:0.
+        theLMajor := $self readByte int:2.
+        theLMinor := $self readByte int:3.
+        theCodeSize := $self readInt32 int:4.
+        theInitializedDataSize := $self readInt32 int:8.
+        theUninitializedDataSize := $self readInt32 int:12.
+        theEntryPointRVA := $self readInt32 int:16.
+        theBaseOfCode := $self readInt32 int:20.
+        theBaseOfData := $self readInt32 int:24.
     ]
 }
 
@@ -126,35 +126,35 @@ class PEHeaderWindowsNTSpecificFields :: HeaderBase
     int theLoaderFlags. // Always 0 (see Section 23.1)
     int theNumberOfDataDirectories. // Always 0x10 (see Section 23.1).
     
-    constructor new &bytearray:data &int:offset
-        <= new &bytearray:data &int:offset;
+    constructor new bytearray:data int:offset
+        <= new bytearray:data int:offset;
     [
         $self readData.
     ]
         
     readData
     [
-        theImageBase := $self readInt32 &int:28.
-        theSectionAlignment := $self readInt32 &int:32.
-        theFileAlignment := $self readInt32 &int:36.
-        theOSMajor := $self readInt16 &int:40.
-        theOSMinor := $self readInt16 &int:42.
-        theUserMajor := $self readInt16 &int:44.
-        theUserMinor := $self readInt16 &int:46.
-        theSubSysMajor := $self readInt16 &int:48.
-        theSubSysMinor := $self readInt16 &int:50.
-        theReserved := $self readInt32 &int:52.
-        theImageSize := $self readInt32 &int:56.
-        theHeaderSize := $self readInt32 &int:60.
-        theFileChecksum := $self readInt32 &int:64.
-        theSubSystem := $self readInt16 &int:68.
-        theDLLFlags := $self readInt16 &int:70.
-        theStackReserveSize := $self readInt32 &int:72.
-        theStackCommitSize := $self readInt32 &int:76.
-        theHeapReserveSize := $self readInt32 &int:80.
-        theHeapCommitSize := $self readInt32 &int:84.
-        theLoaderFlags := $self readInt32 &int:88.
-        theNumberOfDataDirectories := $self readInt32 &int:92.
+        theImageBase := $self readInt32 int:28.
+        theSectionAlignment := $self readInt32 int:32.
+        theFileAlignment := $self readInt32 int:36.
+        theOSMajor := $self readInt16 int:40.
+        theOSMinor := $self readInt16 int:42.
+        theUserMajor := $self readInt16 int:44.
+        theUserMinor := $self readInt16 int:46.
+        theSubSysMajor := $self readInt16 int:48.
+        theSubSysMinor := $self readInt16 int:50.
+        theReserved := $self readInt32 int:52.
+        theImageSize := $self readInt32 int:56.
+        theHeaderSize := $self readInt32 int:60.
+        theFileChecksum := $self readInt32 int:64.
+        theSubSystem := $self readInt16 int:68.
+        theDLLFlags := $self readInt16 int:70.
+        theStackReserveSize := $self readInt32 int:72.
+        theStackCommitSize := $self readInt32 int:76.
+        theHeapReserveSize := $self readInt32 int:80.
+        theHeapCommitSize := $self readInt32 int:84.
+        theLoaderFlags := $self readInt32 int:88.
+        theNumberOfDataDirectories := $self readInt32 int:92.
     ]
 }
 
@@ -186,30 +186,30 @@ class PEHeaderDataDirectories :: HeaderBase
     long theCLIHeader. // CLI Header with directories for runtime data, (see clause 24.3.1).
     long theReserved. // Always 0 (see Section 23.1).
 
-    constructor new &bytearray:data &int:offset
-        <= new &bytearray:data &int:offset;
+    constructor new bytearray:data int:offset
+        <= new bytearray:data int:offset;
     [
         $self readData.
     ]
         
     readData
     [
-        theExportTable := $self readInt64 &int:96.
-        theImportTable := $self readInt64 &int:104.
-        theResourceTable := $self readInt64 &int:112.
-        theExceptionTable := $self readInt64 &int:120.
-        theCertificateTable := $self readInt64 &int:128.
-        theBaseRelocationTable := $self readInt64 &int:136.
-        theDebug := $self readInt64 &int:144.
-        theCopyright := $self readInt64 &int:152.
-        theGlobalPtr := $self readInt64 &int:160.
-        theTLSTable := $self readInt64 &int:168.
-        theLoadConfigTable := $self readInt64 &int:176.
-        theBoundImport := $self readInt64 &int:184.
-        theIAT := $self readInt64 &int:192.
-        theDelayImportDescriptor := $self readInt64 &int:200.
-        theCLIHeader := $self readInt64 &int:208.
-        theReserved := $self readInt64 &int:216.
+        theExportTable := $self readInt64 int:96.
+        theImportTable := $self readInt64 int:104.
+        theResourceTable := $self readInt64 int:112.
+        theExceptionTable := $self readInt64 int:120.
+        theCertificateTable := $self readInt64 int:128.
+        theBaseRelocationTable := $self readInt64 int:136.
+        theDebug := $self readInt64 int:144.
+        theCopyright := $self readInt64 int:152.
+        theGlobalPtr := $self readInt64 int:160.
+        theTLSTable := $self readInt64 int:168.
+        theLoadConfigTable := $self readInt64 int:176.
+        theBoundImport := $self readInt64 int:184.
+        theIAT := $self readInt64 int:192.
+        theDelayImportDescriptor := $self readInt64 int:200.
+        theCLIHeader := $self readInt64 int:208.
+        theReserved := $self readInt64 int:216.
     ]
     
     importTable = theImportTable.
@@ -262,30 +262,30 @@ class SectionHeaders :: HeaderBase
     short theNumberOfLinenumbers. // Always 0 (see Section 23.1).
     int theCharacteristics. // Flags describing section's characteristics, see below.
 
-    constructor new &bytearray:data &int:offset
-        <= new &bytearray:data &int:offset;
+    constructor new bytearray:data int:offset
+        <= new bytearray:data int:offset;
     [
         $self readData.
     ]
         
     readData
     [
-        theName := $self readInt64 &int:0. 
-		theVirtualSize := $self readInt32 &int:8.
-		theVirtualAddress := $self readInt32 &int:12.
-		theSizeOfRawData := $self readInt32 &int:16.
-		thePointerToRawData := $self readInt32 &int:20.
-		thePointerToRelocations := $self readInt32 &int:24.
-		thePointerToLinenumbers := $self readInt32 &int:28.
-		theNumberOfRelocations := $self readInt16 &int:32.
-		theNumberOfLinenumbers := $self readInt16 &int:34.
-		theCharacteristics := $self readInt32 &int:36.
+        theName := $self readInt64 int:0. 
+		theVirtualSize := $self readInt32 int:8.
+		theVirtualAddress := $self readInt32 int:12.
+		theSizeOfRawData := $self readInt32 int:16.
+		thePointerToRawData := $self readInt32 int:20.
+		thePointerToRelocations := $self readInt32 int:24.
+		thePointerToLinenumbers := $self readInt32 int:28.
+		theNumberOfRelocations := $self readInt16 int:32.
+		theNumberOfLinenumbers := $self readInt16 int:34.
+		theCharacteristics := $self readInt32 int:36.
     ]
     
     pointerToRawData = thePointerToRawData.
     virtualAddress = theVirtualAddress.
     name = theName.
-    asciiName = Util getASCIIString &long:theName.
+    asciiName = Util getASCIIString long:theName.
 }
 
 // -----------------------------------------------------------------
@@ -307,19 +307,19 @@ class ImportTable :: HeaderBase
     // the IAT descriptor in the optional header).
     int theImportAddressTable.
     
-    constructor new &bytearray:data &int:offset
-        <= new &bytearray:data &int:offset;
+    constructor new bytearray:data int:offset
+        <= new bytearray:data int:offset;
     [
         $self readData.
     ]
         
     readData
     [
-        theImportLookupTable := $self readInt32 &int:0.
-        theDateTimeStamp := $self readInt32 &int:4.
-        theForwarderChain := $self readInt32 &int:8.
-        theName := $self readInt32 &int:12.
-        theImportAddressTable := $self readInt32 &int:16.
+        theImportLookupTable := $self readInt32 int:0.
+        theDateTimeStamp := $self readInt32 int:4.
+        theForwarderChain := $self readInt32 int:8.
+        theName := $self readInt32 int:12.
+        theImportAddressTable := $self readInt32 int:16.
     ]
 }
 
@@ -351,16 +351,16 @@ class Relocations :: HeaderBase
 	/// that follow, rounded up to the next multiple of 4.
 	int theBlockSize.
  
-    constructor new &bytearray:data &int:offset
-        <= new &bytearray:data &int:offset;
+    constructor new bytearray:data int:offset
+        <= new bytearray:data int:offset;
     [
         $self readData.
     ]
         
     readData
     [
-        thePageRVA := $self readInt32 &int:0.
-		theBlockSize := $self readInt32 &int:4.
+        thePageRVA := $self readInt32 int:0.
+		theBlockSize := $self readInt32 int:4.
     ]
 }
 
@@ -394,26 +394,26 @@ class CLIHeader :: HeaderBase
 	long theExportAddressTableJumps. // Always 0 (see Section 23.1).
 	long theManagedNativeHeader. // Always 0 (see Section 23.1).
 
-	constructor new &bytearray:data &int:offset
-        <= new &bytearray:data &int:offset;
+	constructor new bytearray:data int:offset
+        <= new bytearray:data int:offset;
     [
         $self readData.
     ]
         
     readData
     [
-		theCb := $self readInt32 &int:0.
-		theMajorRuntimeVersion := $self readInt16 &int:4.
-		theMinorRuntimeVersion := $self readInt16 &int:6.
-		theMetaData := $self readInt64 &int:8.
-		theFlags := $self readInt32 &int:16.
-		theEntryPointToken := $self readInt32 &int:20.
-		theResources := $self readInt64 &int:24.
-		theStrongNameSignature := $self readInt64 &int:32.
-		theCodeManagerTable := $self readInt64 &int:40.
-		theVTableFixups := $self readInt64 &int:48.
-		theExportAddressTableJumps := $self readInt64 &int:56.
-		theManagedNativeHeader := $self readInt64 &int:64.
+		theCb := $self readInt32 int:0.
+		theMajorRuntimeVersion := $self readInt16 int:4.
+		theMinorRuntimeVersion := $self readInt16 int:6.
+		theMetaData := $self readInt64 int:8.
+		theFlags := $self readInt32 int:16.
+		theEntryPointToken := $self readInt32 int:20.
+		theResources := $self readInt64 int:24.
+		theStrongNameSignature := $self readInt64 int:32.
+		theCodeManagerTable := $self readInt64 int:40.
+		theVTableFixups := $self readInt64 int:48.
+		theExportAddressTableJumps := $self readInt64 int:56.
+		theManagedNativeHeader := $self readInt64 int:64.
 	]
  
     metadata = theMetaData.
@@ -442,17 +442,17 @@ class VtableFixup :: HeaderBase
 	short theSize. // Number of entries in Vtable
 	short theType. // Type of the entries, as defined in table below
 
-    constructor new &bytearray:data &int:offset
-        <= new &bytearray:data &int:offset;
+    constructor new bytearray:data int:offset
+        <= new bytearray:data int:offset;
     [
         $self readData.
     ]
         
     readData
     [
-        theVirtualAddress := $self readInt32 &int:0.
-		theSize := $self readInt16 &int:4.
-		theType := $self readInt16 &int:6.
+        theVirtualAddress := $self readInt32 int:0.
+		theSize := $self readInt16 int:4.
+		theType := $self readInt16 int:6.
     ]
 }
 
@@ -472,21 +472,21 @@ class ExceptionHandlingClauses :: HeaderBase
 	int theClassToken. // Meta data token for a type-based exception handler
 	int theFilterOffset. // Offset in method body for filter-based exception handler
 
-    constructor new &bytearray:data &int:offset
-        <= new &bytearray:data &int:offset;
+    constructor new bytearray:data int:offset
+        <= new bytearray:data int:offset;
     [
         $self readData.
     ]
         
     readData
     [
-		theFlags := $self readInt32 &int:0.
-		theTryOffset := $self readInt32 &int:4.
-		theTryLength := $self readInt32 &int:8.
-		theHandlerOffset := $self readInt32 &int:12.
-		theHandlerLength := $self readInt32 &int:16.
-		theClassToken := $self readInt32 &int:20.
-		theFilterOffset := $self readInt32 &int:20.
+		theFlags := $self readInt32 int:0.
+		theTryOffset := $self readInt32 int:4.
+		theTryLength := $self readInt32 int:8.
+		theHandlerOffset := $self readInt32 int:12.
+		theHandlerLength := $self readInt32 int:16.
+		theClassToken := $self readInt32 int:20.
+		theFilterOffset := $self readInt32 int:20.
     ]
 }
 
@@ -506,19 +506,19 @@ class MetadataRoot :: HeaderBase
 	int theReserved. // Reserved, always 0 (see Section 23.1).
 	int theLength. // Length of version string in bytes, say m (<= 255), rounded up to a multiple of four.
 
-    constructor new &bytearray:data &int:offset
-        <= new &bytearray:data &int:offset;
+    constructor new bytearray:data int:offset
+        <= new bytearray:data int:offset;
     [
         $self readData.
     ]
         
     readData
     [
-        theSignature := $self readInt32 &int:0.
-        theMajorVersion := $self readInt16 &int:4.
-        theMinorVersion := $self readInt16 &int:6.
-        theReserved := $self readInt32 &int:8.
-        theLength := $self readInt32 &int:12.
+        theSignature := $self readInt32 int:0.
+        theMajorVersion := $self readInt16 int:4.
+        theMinorVersion := $self readInt16 int:6.
+        theReserved := $self readInt32 int:8.
+        theLength := $self readInt32 int:12.
     ] 
     
     length = theLength.
@@ -539,21 +539,21 @@ class SharpTildeStream :: HeaderBase
 	long theValid. // Bit vector of present tables, let n be the number of bits that are 1.
 	long theSorted. // Bit vector of sorted tables.
  
-    constructor new &bytearray:data &int:offset
-        <= new &bytearray:data &int:offset;
+    constructor new bytearray:data int:offset
+        <= new bytearray:data int:offset;
     [
         $self readData.
     ]
         
     readData
     [
-        theReserved1 := $self readInt32 &int:0.
-        theMajorVersion := $self readByte &int:4.
-        theMinorVersion := $self readByte &int:5.
-        theHeapSizes := $self readByte &int:6.
-        theReserved2 := $self readByte &int:7.
-        theValid := $self readInt64 &int:8.
-        theSorted := $self readInt64 &int:16.
+        theReserved1 := $self readInt32 int:0.
+        theMajorVersion := $self readByte int:4.
+        theMinorVersion := $self readByte int:5.
+        theHeapSizes := $self readByte int:6.
+        theReserved2 := $self readByte int:7.
+        theValid := $self readInt64 int:8.
+        theSorted := $self readInt64 int:16.
     ]
     
     getOffset = $self offset.

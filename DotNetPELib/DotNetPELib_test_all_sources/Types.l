@@ -1,4 +1,4 @@
-#import system.
+import system.
 
 extension CorILMethod
 {
@@ -240,8 +240,8 @@ struct DoubleInt
     int theA.
     int theB.
     
-    setA &int:a [ theA := a. ]
-    setB &int:b [ theB := b. ]
+    setA int:a [ theA := a. ]
+    setB int:b [ theB := b. ]
     
     A = theA.
     B = theB.
@@ -262,7 +262,7 @@ class OpCode { }
 class ILCode
 {
     int theAddress.
-    object(OpCode) theOpCode.
+    object theOpCode.
     int theOpCodeLength.
     object theOperand.
     int theOperandLength.
