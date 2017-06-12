@@ -10,9 +10,9 @@ class TableBase :: HeaderBase
     object theTag.
     object theIndexManager.
     
-    readData bytearray:data int:offset
+    readTData bytearray:data int:offset
     [
-        
+        $self readData bytearray:data int:offset.
         thePointer := theOffset.
     ]
     
@@ -24,7 +24,8 @@ class TableBase :: HeaderBase
     readByte
     [
         byte ret := theData@thePointer.
-        ^$nil.
+        thePointer := thePointer + 1.
+        ^ret.
     ]
     
     readInt16
@@ -41,8 +42,9 @@ class TableBase :: HeaderBase
         ^ ret.
     ]
     
-    readStringIndex
+    readStringsIndex
     [
+        //^(theIndexManager strings)iif:($self readInt32):($self readInt16).
         (theIndexManager strings == true)
             ? [ ^$self readInt32. ]
             ! [ ^$self readInt16. ].
@@ -62,8 +64,15 @@ class TableBase :: HeaderBase
             ! [ ^$self readInt16. ].
     ]
     
+    readIndex metadatatables:aTable
+    [
+        ^(theIndexManager isInt32 metadatatables:aTable)iif:($self readInt32):($self readInt16).
+    ]
+    
     setIndexManager indexManager:aIdxManager
     [
         theIndexManager := aIdxManager.
     ] 
+    
+    setIndex int:aIndex [ theIndex := aIndex. ]
 }

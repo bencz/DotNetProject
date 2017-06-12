@@ -8,7 +8,7 @@ import extensions'routines.
 
 testUtilClass =
 [
-    var br := BinaryFileReader new ; path:"..\TestExecutables\Test1.exe".
+    var br := BinaryFileReader new path:"..\TestExecutables\Test1.exe".
     int exeSize := (br stream) length.
     var exeBytes := ByteArray new:exeSize.
     br read bytearray:exeBytes int:exeSize.
@@ -23,20 +23,20 @@ testUtilClass =
     var c2 := Util getInt64 bytearray:exeBytes int:108h. // 0x0000058c00004000
     var c3 := Util getInt64 bytearray:exeBytes int:128h. // 0x0000001c000028a0
     var c4 := Util getInt64 bytearray:exeBytes int:168h. // 0x0000004800002008
-    var c5 := Util getInt64 bytearray:exeBytes int:178h. // expected -> 0x000000747865742e
+    var c5 := Util getInt64 bytearray:exeBytes int:178h. // 0x000000747865742e
     
     var d1 := Util getBytes bytearray:exeBytes int:0c1ah.
     var d1_text := UTF8Encoding toLiteral int:0 int:(d1 length) bytearray:d1. // mscoree.dll 
     
     var d2 := Util getBytes bytearray:exeBytes int:07f9h.
-    var d2_text := UTF8Encoding toLiteral int:0 int:(d1 length) bytearray:d2. // Test1.exe
+    var d2_text := UTF8Encoding toLiteral int:0 int:(d2 length) bytearray:d2. // Test1.exe
     
     var e1 := Util getASCIIString long:500236121134l.
 ].
 
 testPeFileHeader =
 [
-    var br := BinaryFileReader new ; path:"..\TestExecutables\Test1.exe".
+    var br := BinaryFileReader new path:"..\TestExecutables\Test1.exe".
     int exeSize := (br stream) length.
     var exeBytes := ByteArray new:exeSize.
     br read bytearray:exeBytes int:exeSize.
@@ -47,7 +47,7 @@ testPeFileHeader =
 
 testTableBase =
 [
-    var br := BinaryFileReader new ; path:"..\TestExecutables\Test1.exe".
+    var br := BinaryFileReader new path:"..\TestExecutables\Test1.exe".
     int exeSize := (br stream) length.
     var exeBytes := ByteArray new:exeSize.
     br read bytearray:exeBytes int:exeSize.
@@ -59,19 +59,19 @@ testTableBase =
 
 testIndexManager = 
 [
-    var br := BinaryFileReader new ; path:"..\TestExecutables\Test1.exe".
+    var br := BinaryFileReader new path:"..\TestExecutables\Test1.exe".
     int exeSize := (br stream) length.
     var exeBytes := ByteArray new:exeSize.
     br read bytearray:exeBytes int:exeSize.
     br close.
     
-    var idxManager := IndexManager new bytearray:exeBytes ; rvaManager:(RVAManager new).
-    idxManager createTable; metadatatables:(MetadataTables assembly).
+    var idxManager := IndexManager new bytearray:exeBytes rvaManager:(RVAManager new).
+    var r := idxManager getTagSize codedIndices:cdIdcResolutionScope.
 ].
 
 testDoubleInt =
 [
-    var br := BinaryFileReader new ; path:"..\TestExecutables\Test1.exe".
+    var br := BinaryFileReader new path:"..\TestExecutables\Test1.exe".
     int exeSize := (br stream) length.
     var exeBytes := ByteArray new:exeSize.
     br read bytearray:exeBytes int:exeSize.
@@ -80,15 +80,30 @@ testDoubleInt =
     var rt := Util getDataSize bytearray:exeBytes int:9adh.
 ].
 
+testLogicalAnd =
+[
+    long v := 38654842183l.
+    int i := 0.
+    while(i < 63)
+    [
+        long a := 1l << i.
+        long b := v && a.
+        
+        if(b != 0) [ console writeLine:i:" -- ":b. ].
+        i := i + 1.
+    ].
+].
+
 program =
 [    
     //testUtilClass eval.
     //testPeFileHeader eval.
     //testTableBase eval.
     //testIndexManager eval.  
-    //testDoubleInt eval.  
+    //testDoubleInt eval. 
+    //testLogicalAnd eval.
     
-    var br := BinaryFileReader new ; path:"..\TestExecutables\Test1.exe".
+    var br := BinaryFileReader new path:"..\TestExecutables\Test1.exe".
     int exeSize := (br stream) length.
     var exeBytes := ByteArray new:exeSize.
     br read bytearray:exeBytes int:exeSize.

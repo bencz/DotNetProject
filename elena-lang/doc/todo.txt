@@ -2,9 +2,15 @@
 In development:
 ------                              
 
+              zdev 
+                 * scripting library : branching
+                 * scripting library : loops
+                 * scripting library : procedures
+                 * scripting library : implement fibonacci algorithm
+                 * scripting library : language interpreter
+
               xdev - refactoring
-                 * migrating rosetta samples
-                 * migrating script samples
+                 * migrating rosetta samples : bulls and cows
                  * migrating pi2 sample
 
                  * allow to initialize template based variable : arrayof numbers(int) := int(3).
@@ -36,18 +42,15 @@ In development:
                       int length :: outnprop(readColumnsTo).
 
                  * no need to copy to the buffer field / variable / method attributes
+                 * cannot declare the following method : goto starting []
+
+                 * operator << should be used to add a list item
 
 ------                                 
 Pipeline:
 ------                                                                                         
               sdev - rosetta samples
                  * Zeckendorf arithmetic
-
-              zdev 
-                 * scripting library : branching
-                 * scripting library : loops
-                 * scripting library : procedures
-                 * scripting library : language interpreter
 
               xdev - x64
                  * compile 64 bit IDE without warnings
@@ -90,6 +93,7 @@ Pipeline:
                  * rosetta sample : Magic squares of odd order
 
               idev - debugger
+                 * Make possible to provide alternative path to lib #188
                  * fix tape debugging : step over
 
               xdev - generic development 

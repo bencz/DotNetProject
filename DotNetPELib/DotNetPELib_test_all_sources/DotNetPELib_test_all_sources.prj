@@ -8,11 +8,13 @@ warn:unresolved=0
 
 [files] 
 Types.l
+Consts.l
 Util.l
 RVAManager.l  
-HeaderBase.l
-TableBase.l
-MetadataTables.l
+HeaderBase.l    
+TableBase.l   
+CodedIndices.l
+MetadataTables.l 
 IndexManager.l
 PEHeaders.l  
 StreamHeader.l

@@ -27,12 +27,14 @@ class PEData
         theData := data.
         $self readPEHeaders.
         $self readCLIHeader.
+        if((theTilde == $nil) || (theSharpTilde == $nil)) [ ^$nil. ]. 
+        theIdxm makeTree pedata:($self).
     ]
     
     readPEHeaders
     [
         int offset := Util getInt32 bytearray:theData int:3ch.
-        
+
         offset := offset + 4.
         thePe1 := PEFileHeader new bytearray:theData int:offset.
         
@@ -45,8 +47,8 @@ class PEData
         $self readSections int:offset.
         
         int addressImportTable := RVAManagerHelper getAddress long:(thePe4 importTable).
-        (addressImportTable == 0)
-        ![
+        ifnot(addressImportTable == 0)
+        [
             theImportTables := List new.
             int address := theRva convertToPhysical int:addressImportTable.
             while((Util isZero bytearray:theData int:address int:20) == false)
@@ -85,16 +87,16 @@ class PEData
         offset := offset + theMetadataRoot length + 18.
         int numberOfStreams := Util getInt16 bytearray:theData int:offset.
         offset := offset + 2.
-        theIdxm := IndexManager new bytearray:theData ; rvaManager:theRva.
+        theIdxm := IndexManager new bytearray:theData rvaManager:theRva.
         
         int i := 0.
         while(i < numberOfStreams)
         [
             var sh := StreamHeader new bytearray:theData int:offset.
-            sh setMetadataRoot; metadataroot:theMetadataRoot.
+            sh setMetadataRoot metadataroot:theMetadataRoot.
             int streamSize := sh getStreamSize.
             offset := offset + streamSize.
-            $self setStreamHeader ; streamHeader:sh.
+            $self setStreamHeader streamHeader:sh.
             i := i + 1.
         ].
         $self readTilde.
@@ -126,14 +128,18 @@ class PEData
     
     readTilde
     [
-        ((theTilde == $nil) || (theSharpTilde == $nil))!
+        ifnot((theTilde == $nil) || (theSharpTilde == $nil))
         [
             theIdxm setHeapSizes byte:(theSharpTilde heapSizes).
             int address := (theSharpTilde getOffset) + 24.
+            long sharpTildeValid := theSharpTilde valid.
             int i := 0.
             while(i < 63)
             [
-                (((theSharpTilde valid) && (1l << i)) == 0)!
+                var tmp := 1l << i.
+                var r := tmp && sharpTildeValid.
+                
+                if(r != 0l)
                 [
                     int rows := Util getInt32 bytearray:theData int:address.
                     bool isDefined := MetadataTables isDefined int:i.
@@ -143,6 +149,8 @@ class PEData
                 i := i + 1.
             ].
             
+            console writeLine:address.
+   
             i := 0.
             while(i < 63)
             [
@@ -150,9 +158,11 @@ class PEData
                 int j := 0.
                 while(j < rows)
                 [
-                    var tblBase := theIdxm createTable ; metadatatables:i.
-                    theIdxm addTable ; tablebase:tblBase int:i.
-                    tblBase readData bytearray:theData int:address.
+                    var tblBase := theIdxm createTable metadatatables:i bytearray:theData int:address.
+                    theIdxm addTable tablebase:tblBase int:i.
+                    tblBase readData.
+                    tblBase setIndex int:(j + 1).
+                    address := address + (tblBase getSize).
                     j := j + 1.
                 ].
                 i := i + 1.

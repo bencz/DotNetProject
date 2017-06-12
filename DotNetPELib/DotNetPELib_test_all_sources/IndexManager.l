@@ -12,7 +12,7 @@ class IndexManager
     int theGuidOffset.
     bool theBlob.
     int theBlobOffset.
-    object theTables.
+    array theTables.
     intarray theTableRows.
     
     constructor new bytearray:aData rvaManager:aRva
@@ -48,10 +48,10 @@ class IndexManager
         theBlob := (aSize && 4) != 0. 
     ]
     
-    createTable metadatatables:aTable
+    createTable metadatatables:aTable bytearray:aData int:aAddress
     [
-        var ret := MetadataTableCreator create; metadatatables:aTable.
-        ret setIndexManager; indexManager:($self).
+        var ret := MetadataTableCreator create metadatatables:aTable bytearray:aData int:aAddress.
+        ret setIndexManager indexManager:($self).
         ^ ret.
     ]
     
@@ -61,10 +61,79 @@ class IndexManager
         
     ]
     
+    getUSString int:aOffset
+    [
+        int address := theUSOffset + aOffset.
+        var dataSize := Util getDataSize bytearray:theData int:address.
+        byte bytes := Util getBytes bytearray:theData int:((dataSize getA) + address) int:(dataSize getB).
+        // return a unicode string 
+    ]
+    
+    getBlobBytes int:aOffset
+    [
+        int address := theBlobOffset + aOffset.
+        var dataSize := Util getDataSize bytearray:theData int:address.
+        ^ Util getBytes bytearray:theData int:((dataSize getA) + address) int:(dataSize getB).        
+    ]
+    
+    isInt32 metadatatables:aMdt [ ^((theTableRows@aMdt) > ShortNumber max). ]
+    
+    isInt32 codedIndices:aCodIdc 
+    [
+        int max := 0.
+    ]
+    
+    getTagSize codedIndices:aCodIdc
+    [
+        int rt := 0.
+        int i := (((codedIndexMetaDataTables eval)@aCodIdc) length) - 1.
+        while(i > 0)
+        [
+            rt := rt + 1.
+            i := i >> 1.
+        ].
+        ^rt.
+    ]
+    
+    makeTree pedata:aPeData
+    [
+        var listType := (theTables@mdTtypeDef).
+        var size := listType length. 
+        
+        int i := 0.
+        while(i < size)
+        [
+            var t2 := ((i + 1) < size)iif:(listType@(i + 1)):$nil.
+            $self makeTree typeDefTbl:(listType@i) typeDefTbl:t2.
+            i := i + 1.
+        ].
+    ]
+    
+    makeTree typeDefTbl:aT1 typeDefTbl:aT2
+    [
+        int i := 0.
+        array aT1Children := Array new int:3.
+        while(i < 3) [ aT1Children@i := List new. i := i + 1.].
+        
+        aT1 setChildren children:aT1Children.
+        
+        var listField := (theTables@mdTfield).
+        var listMethod := (theTables@mdTmethodDef).
+        int f1 := aT1 fieldList.
+        int f2 := (aT2 != $nil)iif:(aT2 fieldList):((listField length) + 1).
+        
+        i := f1.
+        console writeLine:f1.
+    ]
+    
+    makeTree methodDefTbl:aMd
+    [
+    ]
+    
     addRowToTable int:aRow int:aPos [ theTableRows@aPos := aRow. ]
     getRowsOfTable int:aPos [ ^theTableRows@aPos. ]
     
-    addTable tablebase:aTableBase int:aPos [ theTables@aPos := aTableBase. ]
+    addTable tablebase:aTableBase int:aPos [ (theTables@aPos) append:aTableBase. ]
     
     setStringsOffset int:aOffset [ theStringsOffset := aOffset. ]
     setUSOffset int:aOffset [ theUSOffset := aOffset. ]
