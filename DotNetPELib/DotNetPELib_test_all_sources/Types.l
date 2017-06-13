@@ -235,7 +235,7 @@ extension COR_ILEXCEPTION_CLAUSE
     FAULT = 0004h. //Fault clause (finally that is called on exception only)
 }
 
-struct DoubleInt
+class DoubleInt
 {
     int theA.
     int theB.
@@ -256,8 +256,6 @@ struct TypeData
     int theElement.
     int theOption.
 }
-
-class OpCode { }
 
 class ILCode
 {

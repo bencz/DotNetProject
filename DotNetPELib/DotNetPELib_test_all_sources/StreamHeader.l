@@ -29,6 +29,11 @@ class StreamHeader :: HeaderBase
         ^(8 + pd).
     ]
     
+    getDataOffset
+    [
+        ^((theMetadataRoot offset) + theStreamOffset).
+    ]
+        
     setMetadataRoot metadataroot:aMetadataroot [ theMetadataRoot := aMetadataroot. ]
 
     name = theName.

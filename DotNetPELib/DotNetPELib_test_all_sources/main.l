@@ -94,6 +94,12 @@ testLogicalAnd =
     ].
 ].
 
+testOpCodes =
+[
+    var t := Opcodes getAllOpCodes.
+    int x := t count.
+].
+
 program =
 [    
     //testUtilClass eval.
@@ -102,6 +108,7 @@ program =
     //testIndexManager eval.  
     //testDoubleInt eval. 
     //testLogicalAnd eval.
+    //testOpCodes eval.
     
     var br := BinaryFileReader new path:"..\TestExecutables\Test1.exe".
     int exeSize := (br stream) length.

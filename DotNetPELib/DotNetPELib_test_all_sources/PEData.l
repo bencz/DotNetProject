@@ -110,19 +110,19 @@ class PEData
                          ];
               "#Strings" [
                             theStrings := aSh.
-                            theIdxm setStringsOffset int:(aSh streamOffset).
+                            theIdxm setStringsOffset int:(aSh getDataOffset).
                          ];
                    "#US" [
                             theUsrstr := aSh.
-                            theIdxm setUSOffset int:(aSh streamOffset).
+                            theIdxm setUSOffset int:(aSh getDataOffset).
                          ];
                  "#GUID" [
                             theGuid := aSh.
-                            theIdxm setGUIDOffset int:(aSh streamOffset).
+                            theIdxm setGUIDOffset int:(aSh getDataOffset).
                          ];
                  "#Blob" [
                             theBlob := aSh.
-                            theIdxm setBlobOffset int:(aSh streamOffset).
+                            theIdxm setBlobOffset int:(aSh getDataOffset).
                          ].
     ]
     
@@ -142,15 +142,13 @@ class PEData
                 if(r != 0l)
                 [
                     int rows := Util getInt32 bytearray:theData int:address.
-                    bool isDefined := MetadataTables isDefined int:i.
+                    bool isDefined := MetadataTable isDefined int:i.
                     (isDefined) ?[ theIdxm addRowToTable int:rows int:i. ].
                     address := address + 4.
                 ].
                 i := i + 1.
             ].
             
-            console writeLine:address.
-   
             i := 0.
             while(i < 63)
             [

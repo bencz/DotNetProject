@@ -9,12 +9,14 @@ warn:unresolved=0
 [files] 
 Types.l
 Consts.l
+OpCode.l
 Util.l
 RVAManager.l  
 HeaderBase.l    
 TableBase.l   
 CodedIndices.l
-MetadataTables.l 
+MetadataTables.l
+MethodData.l 
 IndexManager.l
 PEHeaders.l  
 StreamHeader.l

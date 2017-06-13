@@ -44,7 +44,6 @@ class TableBase :: HeaderBase
     
     readStringsIndex
     [
-        //^(theIndexManager strings)iif:($self readInt32):($self readInt16).
         (theIndexManager strings == true)
             ? [ ^$self readInt32. ]
             ! [ ^$self readInt16. ].
@@ -66,7 +65,16 @@ class TableBase :: HeaderBase
     
     readIndex metadatatables:aTable
     [
-        ^(theIndexManager isInt32 metadatatables:aTable)iif:($self readInt32):($self readInt16).
+        ((theIndexManager isInt32 metadatatables:aTable) == true)
+            ? [ ^$self readInt32. ]
+            ! [ ^$self readInt16. ].
+    ]
+    
+    readIndex codedIndices:aTable
+    [
+        ((theIndexManager isInt32 codedIndices:aTable) == true)
+            ? [ ^$self readInt32. ]
+            ! [ ^$self readInt16. ].
     ]
     
     setIndexManager indexManager:aIdxManager
@@ -75,4 +83,12 @@ class TableBase :: HeaderBase
     ] 
     
     setIndex int:aIndex [ theIndex := aIndex. ]
+    
+    setChildren children:aChild [ theChildren := aChild. ]
+    getChildren int:aAt [ ^ theChildren@aAt. ]
+    appendChildren children:aChild int:aAt [ (theChildren@aAt) append:aChild. ]
+    
+    setParentTable table:aTypeDefTable [ theParentTable := aTypeDefTable. ]
+    
+    setTag tag:aTag [ theTag := aTag. ]
 }

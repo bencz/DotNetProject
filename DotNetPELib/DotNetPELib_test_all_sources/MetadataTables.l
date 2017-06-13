@@ -1,7 +1,7 @@
 import system.
 import system'collections.
 
-extension MetadataTables
+extension MetadataTable
 {
     isDefined int:aType
     [
@@ -48,41 +48,41 @@ extension MetadataTableCreator
 {
     create metadatatables:aTable bytearray:aData int:aOffset
     [
-        (aTable == mdTassembly)? [ ^AssemblyTable new bytearray:aData int:aOffset. ].
-        (aTable == mdTassemblyOS)? [ ^AssemblyOSTable new bytearray:aData int:aOffset. ].
-        (aTable == mdTassemblyProcessor)? [ ^AssemblyProcessorTable new bytearray:aData int:aOffset. ].
-        (aTable == mdTassemblyRef)? [ ^AssemblyRefTable new bytearray:aData int:aOffset. ].
-        (aTable == mdTassemblyRefOS)? [ ^AssemblyRefOSTable new bytearray:aData int:aOffset. ].
-        (aTable == mdTassemblyRefProcessor)? [ ^AssemblyRefProcessorTable new bytearray:aData int:aOffset. ].
-        (aTable == mdTclassLayout)? [ ^ClassLayoutTable new bytearray:aData int:aOffset. ].
-        (aTable == mdTconstant)? [ ^ConstantTable new bytearray:aData int:aOffset. ].
-        (aTable == mdTcustomAttribute)? [ ^CustomAttributeTable new bytearray:aData int:aOffset. ].
-        (aTable == mdTdeclSecurity)? [ ^DeclSecurityTable new bytearray:aData int:aOffset. ].
-        (aTable == mdTeventMap)? [ ^EventMapTable new bytearray:aData int:aOffset. ].
-        (aTable == mdTevent)? [ ^EventTable new bytearray:aData int:aOffset. ].
-        (aTable == mdTexportedType)? [ ^ExportedTypeTable new bytearray:aData int:aOffset. ].
-        (aTable == mdTfield)? [ ^FieldTable new bytearray:aData int:aOffset. ].
-        (aTable == mdTfieldLayout)? [ ^FieldLayoutTable new bytearray:aData int:aOffset. ].
-        (aTable == mdTfieldMarshal)? [ ^FieldMarshalTable new bytearray:aData int:aOffset. ].
-        (aTable == mdTfieldRVA)? [ ^FieldRVATable new bytearray:aData int:aOffset. ].
-        (aTable == mdTfile)? [ ^FileTable new bytearray:aData int:aOffset. ].
-        (aTable == mdTimplMap)? [ ^ImplMapTable new bytearray:aData int:aOffset. ].
-        (aTable == mdTinterfaceImpl)? [ ^InterfaceImplTable new bytearray:aData int:aOffset. ].
-        (aTable == mdTmanifestResource)? [ ^ManifestResourceTable new bytearray:aData int:aOffset. ].
-        (aTable == mdTmemberRef)? [ ^MemberRefTable new bytearray:aData int:aOffset. ].
-        (aTable == mdTmethodDef)? [ ^MethodDefTable new bytearray:aData int:aOffset. ].
-        (aTable == mdTmethodImpl)? [ ^MethodImplTable new bytearray:aData int:aOffset. ].
-        (aTable == mdTmethodSemantics)? [ ^MethodSemanticsTable new bytearray:aData int:aOffset. ].
-        (aTable == mdTmodule)? [ ^ModuleTable new bytearray:aData int:aOffset. ].
-        (aTable == mdTmoduleRef)? [ ^ModuleRefTable new bytearray:aData int:aOffset. ].
-        (aTable == mdTnestedClass)? [ ^NestedClassTable new bytearray:aData int:aOffset. ].
-        (aTable == mdTparam)? [ ^ParamTable new bytearray:aData int:aOffset. ].
-        (aTable == mdTproperty)? [ ^PropertyTable new bytearray:aData int:aOffset. ].
-        (aTable == mdTpropertyMap)? [ ^PropertyMapTable new bytearray:aData int:aOffset. ].
-        (aTable == mdTstandAloneSig)? [ ^StandAloneSigTable new bytearray:aData int:aOffset. ].
-        (aTable == mdTtypeDef)? [ ^TypeDefTable new bytearray:aData int:aOffset. ].
-        (aTable == mdTtypeRef)? [ ^TypeRefTable new bytearray:aData int:aOffset. ].
-        (aTable == mdTtypeSpec)? [ ^TypeSpecTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtAssembly)?[ ^ AssemblyTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtAssemblyOS)?[ ^ AssemblyOSTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtAssemblyProcessor)?[ ^ AssemblyProcessorTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtAssemblyRef)?[ ^ AssemblyRefTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtAssemblyRefOS)?[ ^ AssemblyRefOSTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtAssemblyRefProcessor)?[ ^ AssemblyRefProcessorTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtClassLayout)?[ ^ ClassLayoutTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtConstant)?[ ^ ConstantTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtCustomAttribute)?[ ^ CustomAttributeTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtDeclSecurity)?[ ^ DeclSecurityTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtEventMap)?[ ^ EventMapTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtEvent)?[ ^ EventTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtExportedType)?[ ^ ExportedTypeTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtField)?[ ^ FieldTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtFieldLayout)?[ ^ FieldLayoutTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtFieldMarshal)?[ ^ FieldMarshalTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtFieldRVA)?[ ^ FieldRVATable new bytearray:aData int:aOffset. ].
+        (aTable == mdtFile)?[ ^ FileTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtImplMap)?[ ^ ImplMapTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtInterfaceImpl)?[ ^ InterfaceImplTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtManifestResource)?[ ^ ManifestResourceTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtMemberRef)?[ ^ MemberRefTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtMethodDef)?[ ^ MethodDefTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtMethodImpl)?[ ^ MethodImplTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtMethodSemantics)?[ ^ MethodSemanticsTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtModule)?[ ^ ModuleTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtModuleRef)?[ ^ ModuleRefTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtNestedClass)?[ ^ NestedClassTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtParam)?[ ^ ParamTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtProperty)?[ ^ PropertyTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtPropertyMap)?[ ^ PropertyMapTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtStandAloneSig)?[ ^ StandAloneSigTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtTypeDef)?[ ^ TypeDefTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtTypeRef)?[ ^ TypeRefTable new bytearray:aData int:aOffset. ].
+        (aTable == mdtTypeSpec)?[ ^ TypeSpecTable new bytearray:aData int:aOffset. ].
     ]
 }
 
@@ -232,7 +232,7 @@ class AssemblyRefOSTable :: TableBase
         theOSPlatformId := $self readInt32.
         theOSMajorVersion := $self readInt32.
         theOSMinorVersion := $self readInt32.
-        //theAssemblyRef = ReadIndex(MetadataTables.AssemblyRef);
+        theAssemblyRef := $self readIndex metadatatables:mdtAssemblyRef.
     ]
 }
 
@@ -255,7 +255,7 @@ class AssemblyRefProcessorTable :: TableBase
     readData
     [
         theProcessor := $self readInt32.
-        //theAssemblyRef = ReadIndex(MetadataTables.AssemblyRef);
+        theAssemblyRef := $self readIndex metadatatables:mdtAssemblyRef.
     ]
 }
 
@@ -285,7 +285,7 @@ class ClassLayoutTable :: TableBase
     [
         thePackingSize := $self readInt16.
         theClassSize := $self readInt32.
-        //theParent = $self readIndex(MetadataTables.TypeDef).
+        theParent := $self readIndex metadatatables:mdtTypeDef.
     ]
 }
 
@@ -322,7 +322,7 @@ class ConstantTable :: TableBase
         
         if(theOffset == thePointer) [ doIncrease := true. ].
         theType := $self readByte. 
-        theParent := $self readIndex metadatatables:cdIdcHasConstant.
+        theParent := $self readIndex codedIndices:cdIdcHasConstant.
         theValue := $self readBlobIndex.
         
         // need to increase the offset for readByte in this case
@@ -363,8 +363,8 @@ class CustomAttributeTable :: TableBase
 
     readData
     [
-        theParent := $self readIndex metadatatables:cdIdcHasCustomAttribute.
-        theType := $self readIndex metadatatables:cdIdcCustomAttributeType.
+        theParent := $self readIndex codedIndices:cdIdcHasCustomAttribute.
+        theType := $self readIndex codedIndices:cdIdcCustomAttributeType.
         theValue := $self readBlobIndex.
     ]
 }
@@ -390,7 +390,7 @@ class DeclSecurityTable :: TableBase
     readData
     [
         theAction := $self readInt16.
-        //theParent = ReadIndex(MetadataTables.MethodDef);
+        theParent := $self readIndex metadatatables:mdtMethodDef.
         thePermissionSet := $self readBlobIndex.
     ]
 }
@@ -413,8 +413,8 @@ class EventMapTable :: TableBase
 
     readData
     [
-        //theParent = ReadIndex(MetadataTables.TypeDef);
-        //theEventList = ReadIndex(MetadataTables.Event);
+        theParent := $self readIndex metadatatables:mdtTypeDef.
+        theEventList := $self readIndex metadatatables:mdtEvent.
     ]
 }
 
@@ -448,7 +448,7 @@ class EventTable :: TableBase
     [
         theEventFlags := $self readInt16.
         theName := $self readStringsIndex.
-        theEventType := $self readIndex metadatatables:cdIdcTypeDefOrRef.
+        theEventType := $self readIndex codedIndices:cdIdcTypeDefOrRef.
     ]
 }
 
@@ -478,10 +478,10 @@ class ExportedTypeTable :: TableBase
     readData
     [
         theFlags := $self readInt32.
-        //theTypeDefId = ReadIndex(MetadataTables.TypeDef);
+        theTypeDefId := $self readIndex metadatatables:mdtTypeDef.
         theTypeName := $self readStringsIndex.
         theTypeNamespace := $self readStringsIndex.
-        theImplementation := $self readIndex metadatatables:cdIdcImplementation.
+        theImplementation := $self readIndex codedIndices:cdIdcImplementation.
     ]
 }
 
@@ -529,7 +529,7 @@ class FieldLayoutTable :: TableBase
     readData
     [
         theFieldOffset := $self readInt32.
-        //theField = ReadIndex(MetadataTables.Field);
+        theField := $self readIndex metadatatables:mdtField.
     ]
 }
 
@@ -551,7 +551,7 @@ class FieldMarshalTable :: TableBase
 
     readData
     [
-        theParent := $self readIndex metadatatables:cdIdcHasFieldMarshal.
+        theParent := $self readIndex codedIndices:cdIdcHasFieldMarshal.
         theNativeType := $self readBlobIndex.
     ]
 }
@@ -576,7 +576,7 @@ class FieldRVATable :: TableBase
     readData
     [
         theRVA := $self readInt32.
-        //theField = ReadIndex(MetadataTables.Field);
+        theField := $self readIndex metadatatables:mdtField.
     ]
 }
 
@@ -626,9 +626,9 @@ class ImplMapTable :: TableBase
     readData
     [
         theMappingFlags := $self readInt16.
-        theMemberForwarded := $self readIndex metadatatables:cdIdcMemberForwarded.
+        theMemberForwarded := $self readIndex codedIndices:cdIdcMemberForwarded.
         theImportName := $self readStringsIndex.
-//        theImportScope = ReadIndex(MetadataTables.ModuleRef);
+//        theImportScope := $self readIndex metadatatables:mdtModuleRef.
     ]
 }
 
@@ -650,8 +650,8 @@ class InterfaceImplTable :: TableBase
 
     readData
     [
-        //theClass = ReadIndex(MetadataTables.TypeDef);
-        theInterface := $self readIndex metadatatables:cdIdcTypeDefOrRef.
+        theClass := $self readIndex metadatatables:mdtTypeDef.
+        theInterface := $self readIndex codedIndices:cdIdcTypeDefOrRef.
     ]
 }
 
@@ -680,7 +680,7 @@ class ManifestResourceTable :: TableBase
         theManifestResourceOffset := $self readInt32.
         theFlags := $self readInt32.
         theName := $self readStringsIndex.
-        theImplementation := $self readIndex metadatatables:cdIdcImplementation.
+        theImplementation := $self readIndex codedIndices:cdIdcImplementation.
     ]
 }
 
@@ -709,7 +709,7 @@ class MemberRefTable :: TableBase
 
     readData
     [
-        theClass := $self readIndex metadatatables:cdIdcMemberRefParent.
+        theClass := $self readIndex codedIndices:cdIdcMemberRefParent.
         theName := $self readStringsIndex.
         theSignature := $self readBlobIndex.
     ]
@@ -744,8 +744,11 @@ class MethodDefTable :: TableBase
         theFlags := $self readInt16.
         theName := $self readStringsIndex.
         theSignature := $self readBlobIndex.
-        //theParamList = ReadIndex(MetadataTables.Param);
+        theParamList := $self readIndex metadatatables:mdtParam.
     ]
+    
+    signature = theSignature.
+    paramList = theParamList.
 }
 
 // -----------------------------------------------------------------
@@ -766,9 +769,9 @@ class MethodImplTable :: TableBase
 
     readData
     [
-        //theClass = ReadIndex(MetadataTables.TypeDef);
-        theMethodBody := $self readIndex metadatatables:cdIdcMethodDefOrRef.
-        //theMethodDeclaration = ReadIndex(MetadataTables.MethodDef);
+        theClass := $self readIndex metadatatables:mdtTypeDef.
+        theMethodBody := $self readIndex codedIndices:cdIdcMethodDefOrRef.
+        theMethodDeclaration := $self readIndex metadatatables:mdtMethodDef.
     ]
 }
 
@@ -786,14 +789,14 @@ class MethodSemanticsTable :: TableBase
     constructor new bytearray:data int:offset
     [
         $self readTData bytearray:data int:offset.
-        //$self readData
+        //$self readData.
     ]
 
     readData
     [
         theSemantics := $self readInt16.
-        //theMethod = ReadIndex(MetadataTables.MethodDef);
-        theAssociation := $self readIndex metadatatables:cdIdcHasSemantics.
+        theMethod := $self readIndex metadatatables:mdtMethodDef.
+        theAssociation := $self readIndex codedIndices:cdIdcHasSemantics.
     ]
 }
 
@@ -867,8 +870,8 @@ class NestedClassTable :: TableBase
  
     readData
     [
-        //theNestedClass = ReadIndex(MetadataTables.TypeDef);
-        //theEnclosingClass = ReadIndex(MetadataTables.TypeDef);
+        theNestedClass := $self readIndex metadatatables:mdtTypeDef.
+        theEnclosingClass := $self readIndex metadatatables:mdtTypeDef.
     ]
 }
 
@@ -942,8 +945,8 @@ class PropertyMapTable :: TableBase
 
     readData
     [
-        //theParent = ReadIndex(MetadataTables.TypeDef);
-        //thePropertyList = ReadIndex(MetadataTables.Property);
+        theParent := $self readIndex metadatatables:mdtTypeDef.
+        thePropertyList := $self readIndex metadatatables:mdtProperty.
     ]
 }
 
@@ -992,13 +995,13 @@ class TypeDefTable :: TableBase
         theFlags := $self readInt32.
         theName := $self readStringsIndex.
         theNamespace := $self readStringsIndex.
-        theExtends := $self readIndex metadatatables:cdIdcTypeDefOrRef.
-        theFieldList := $self readIndex metadatatables:mdTfield.
-        //theMethodList := ReadIndex(MetadataTables.MethodDef);
+        theExtends := $self readIndex codedIndices:cdIdcTypeDefOrRef.
+        theFieldList := $self readIndex metadatatables:mdtField.
+        theMethodList := $self readIndex metadatatables:mdtMethodDef.
     ]
     
-    setChildren children:aChild [ theChildren := aChild. ]
     fieldList = theFieldList.
+    methodList = theMethodList.
 }
 
 class TypeRefTable :: TableBase
@@ -1018,10 +1021,12 @@ class TypeRefTable :: TableBase
 
     readData
     [
-        theResolutionScope := $self readIndex metadatatables:cdIdcResolutionScope.
+        theResolutionScope := $self readIndex codedIndices:cdIdcResolutionScope.
         theName := $self readStringsIndex.
         theNamespace := $self readStringsIndex.
     ]
+    
+    resolutionScope = theResolutionScope.
 }
 
 // -----------------------------------------------------------------

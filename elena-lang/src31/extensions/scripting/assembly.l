@@ -24,13 +24,87 @@ class Scope
     close = theParent.        
 }
 
+class IfExpression :: Scope
+{
+    object theCondExpr.
+    object theIfClosure.
+    
+    constructor new : aParent
+        <= new:aParent;
+    [
+    ]
+    
+    open Expression
+    [
+        if ($nil == theCondExpr)
+        [
+            theCondExpr := ExpressionScope new:$self.
+            
+            ^ theCondExpr
+        ];
+        [
+           theIfClosure := ExpressionScope newIfExpr:$self.
+           
+           ^ theIfClosure
+        ]        
+    ]
+    
+    close
+        = theParent close.
+        
+    save array_list:retVal
+    [
+        theCondExpr save array_list:retVal.
+        
+        int jumpLabel := retVal length.
+        
+        retVal append:$nil.
+        retVal append:%"tapeOp.tape_jumpifnot[]".
+        
+        theIfClosure save array_list:retVal.
+        
+        retVal@jumpLabel := retVal length.
+    ]                
+}
+
+class LoopExpression :: IfExpression
+{
+    constructor new : aParent
+        <= new:aParent;
+    [
+    ]
+    
+    eval If []
+    
+    save array_list:retVal
+    [
+        int loopLabel := retVal length.
+        
+        theCondExpr save array_list:retVal.
+        
+        int jumpLabel := retVal length.
+        
+        retVal append:$nil.
+        retVal append:%"tapeOp.tape_jumpifnot[]".
+        
+        theIfClosure save array_list:retVal.
+        retVal append:loopLabel.
+        retVal append:%"tapeOp.tape_jump[]".
+        
+        retVal@jumpLabel := retVal length.
+    ]
+    
+    close = { close = theParent. }.
+}
+
 class ExpressionScope :: Scope
 {
     stack      theCallstack.
     textbuffer theMessage.
     bool       theCallExpr.
     bool       theAssignExpr.
-    
+    bool       theIfExpr.
+        
     constructor new : aParent
         <= new : aParent;
     [
@@ -38,7 +112,14 @@ class ExpressionScope :: Scope
         theMessage := TextBuilder new.
         theCallExpr := false.
         theAssignExpr := false.
+        theIfExpr := false.
     ]
+    
+    constructor newIfExpr : aParent
+        <= new : aParent;
+    [
+        theIfExpr := true.
+    ]        
 
     new NumericToken : literal
     [
@@ -102,7 +183,35 @@ class ExpressionScope :: Scope
         
         ^ expr.
     ]
-                
+
+    open Code
+    [
+        var expr := $nil.
+        
+        if (theIfExpr)
+        [
+            expr := CodeScope new:$self.
+        ];
+        [
+            expr := ClosureScope new:$self.
+        ].
+            
+        theCallstack push:expr.
+        
+        ^ expr
+    ]
+
+    eval If
+    [
+        theIfExpr := true.
+        
+        var expr := IfExpression new:$self.
+        
+        theCallstack push:expr.
+        
+        ^ expr.
+    ]
+
     save array_list:retVal
     [
         if(theCallExpr)
@@ -176,12 +285,21 @@ class CodeScope :: Scope
         ^ expr
     ]
     
+    open Loop
+    [
+        var loop := LoopExpression new:$self.
+        
+        theStatements append:loop.
+        
+        ^ { open Expression = loop. }
+    ]
+    
     open Variable
         = 
         {
-            new identToken:token
+            new IdentToken:token
             [
-                theParent new variableToken:token
+                theParent new VariableToken:token
             ]
             
             close = $owner.
@@ -380,6 +498,59 @@ class SymbolBody :: ExpressionScope
     ]
 }
 
+class ClosureScope :: CodeScope
+{
+    object theParameters.
+    vint   theVarCounter.
+    
+    constructor new : parent
+        <= new:parent;
+    [
+        theVarCounter := 0.
+        theParameters := List new.
+    ]
+    
+    save array_list:retVal
+    [
+        retVal append:($self eval)
+    ]
+    
+    new VariableToken : param
+    [
+        theParameters append:(KeyValue new key:param value:(theParameters length + 1)).
+        
+        theVarCounter append int:1
+    ]
+    
+    open Variable
+        = 
+        {
+            new IdentToken:token
+            [
+                $owner new VariableToken:token
+            ]
+            
+            close = $owner.
+        }.
+
+    eval
+    [
+        var list := ArrayList new.
+        
+        int counter := theVarCounter.
+        while (counter > 0)
+        [
+            list append:nil.
+            
+            counter := counter - 1
+        ].
+        
+        $super save array_list:list.
+        
+        ^ Tape new array:list        
+    ]
+}
+
 class SymbolScope :: Scope
 {
     object theBody.
@@ -433,7 +604,7 @@ class Library :: Scope
     
     open Preloaded_symbol
     [
-        var symbol := $self open symbol.
+        var symbol := $self open Symbol.
 
         thePreloaded append:symbol.
                         

@@ -6,92 +6,92 @@ codedIndexMetaDataTables =
     
     // TypeDefOrRef
     rt@0 := IntArray new int:3.
-    rt@0@0 := mdTtypeDef.
-    rt@0@1 := mdTtypeRef.
-    rt@0@2 := mdTtypeSpec.
+    rt@0@0 := mdtTypeDef.
+    rt@0@1 := mdtTypeRef.
+    rt@0@2 := mdtTypeSpec.
     
     // HasConstant
     rt@1 := IntArray new int:3.
-    rt@1@0 := mdTfield.
-    rt@1@1 := mdTparam.
-    rt@1@2 := mdTproperty.
+    rt@1@0 := mdtField.
+    rt@1@1 := mdtParam.
+    rt@1@2 := mdtProperty.
     
     // HasCustomAttribute
     rt@2 := IntArray new int:19.
-    rt@2@00 := mdTmethodDef.
-    rt@2@01 := mdTfield.
-    rt@2@02 := mdTtypeRef.
-    rt@2@03 := mdTtypeDef.
-    rt@2@04 := mdTparam.
-    rt@2@05 := mdTinterfaceImpl.
-    rt@2@06 := mdTmemberRef.
-    rt@2@07 := mdTmodule.
-    rt@2@08 := mdTdeclSecurity.
-    rt@2@09 := mdTproperty.
-    rt@2@10 := mdTevent.
-    rt@2@11 := mdTstandAloneSig.
-    rt@2@12 := mdTmoduleRef.
-    rt@2@13 := mdTtypeSpec.
-    rt@2@14 := mdTassembly.
-    rt@2@15 := mdTassemblyRef.
-    rt@2@16 := mdTfile.
-    rt@2@17 := mdTexportedType.
-    rt@2@18 := mdTmanifestResource.
+    rt@2@00 := mdtMethodDef.
+    rt@2@01 := mdtField.
+    rt@2@02 := mdtTypeRef.
+    rt@2@03 := mdtTypeDef.
+    rt@2@04 := mdtParam.
+    rt@2@05 := mdtInterfaceImpl.
+    rt@2@06 := mdtMemberRef.
+    rt@2@07 := mdtModule.
+    rt@2@08 := mdtDeclSecurity.
+    rt@2@09 := mdtProperty.
+    rt@2@10 := mdtEvent.
+    rt@2@11 := mdtStandAloneSig.
+    rt@2@12 := mdtModuleRef.
+    rt@2@13 := mdtTypeSpec.
+    rt@2@14 := mdtAssembly.
+    rt@2@15 := mdtAssemblyRef.
+    rt@2@16 := mdtFile.
+    rt@2@17 := mdtExportedType.
+    rt@2@18 := mdtManifestResource.
     
     // HasFieldMarshal
     rt@3 := IntArray new int:2.
-    rt@3@0 := mdTfield.
-    rt@3@1 := mdTparam.
+    rt@3@0 := mdtField.
+    rt@3@1 := mdtParam.
 
     // HasDeclSecurity
     rt@4 := IntArray new int:3.
-    rt@4@0 := mdTtypeDef.
-    rt@4@1 := mdTmethodDef.
-    rt@4@2 := mdTassembly.
+    rt@4@0 := mdtTypeDef.
+    rt@4@1 := mdtMethodDef.
+    rt@4@2 := mdtAssembly.
 
     // MemberRefParent
     rt@5 := IntArray new int:5.
-    rt@5@0 := mdTnotUsed.
-    rt@5@1 := mdTtypeRef.
-    rt@5@2 := mdTmoduleRef.
-    rt@5@3 := mdTmethodDef.
-    rt@5@4 := mdTtypeSpec.
+    rt@5@0 := mdtNotUsed.
+    rt@5@1 := mdtTypeRef.
+    rt@5@2 := mdtModuleRef.
+    rt@5@3 := mdtMethodDef.
+    rt@5@4 := mdtTypeSpec.
     
     // HasSemantics
     rt@6 := IntArray new int:2.
-    rt@6@0 := mdTevent.
-    rt@6@1 := mdTproperty.
+    rt@6@0 := mdtEvent.
+    rt@6@1 := mdtProperty.
     
     // MethodDefOrRef
     rt@7 := IntArray new int:2.
-    rt@7@0 := mdTmethodDef.
-    rt@7@1 := mdTmemberRef.
+    rt@7@0 := mdtMethodDef.
+    rt@7@1 := mdtMemberRef.
 
     // MemberForwarded
     rt@8 := IntArray new int:2.
-    rt@8@0 := mdTfield.
-    rt@8@1 := mdTmethodDef.
+    rt@8@0 := mdtField.
+    rt@8@1 := mdtMethodDef.
     
     // Implementation
     rt@9 := IntArray new int:3.
-    rt@9@0 := mdTfile.
-    rt@9@1 := mdTassemblyRef.
-    rt@9@2 := mdTexportedType.
+    rt@9@0 := mdtFile.
+    rt@9@1 := mdtAssemblyRef.
+    rt@9@2 := mdtExportedType.
 
     // CustomAttributeType
     rt@10 := IntArray new int:5.
-    rt@10@0 := mdTnotUsed.
-    rt@10@1 := mdTnotUsed.
-    rt@10@2 := mdTmethodDef.
-    rt@10@3 := mdTmemberRef.
-    rt@10@4 := mdTnotUsed.
+    rt@10@0 := mdtNotUsed.
+    rt@10@1 := mdtNotUsed.
+    rt@10@2 := mdtMethodDef.
+    rt@10@3 := mdtMemberRef.
+    rt@10@4 := mdtNotUsed.
     
     // ResolutionScope
     rt@11 := IntArray new int:4.
-    rt@11@0 := mdTmodule.
-    rt@11@1 := mdTmoduleRef.
-    rt@11@2 := mdTassemblyRef.
-    rt@11@3 := mdTtypeRef.
+    rt@11@0 := mdtModule.
+    rt@11@1 := mdtModuleRef.
+    rt@11@2 := mdtAssemblyRef.
+    rt@11@3 := mdtTypeRef.
     
     ^rt.
 ].

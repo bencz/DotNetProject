@@ -40,6 +40,10 @@
    #define expr_member ::= literal;
    #define expr_member ::= expression;
    #define expr_member ::= assign;
+   #define expr_member ::= operator;
+   #define expr_member ::= <= > += "%""open&Code[0]""" =>
+                             "code" "(" code ")"
+                           <=  > += "%""close[0]""" =>;
 
    #define singleton   ::= <= > += "%""open&Singleton[0]""" =>
                              "singleton" "(" identifier? method* ")"
@@ -62,6 +66,9 @@
 
    #define statement   ::= expression;
    #define statement   ::= "variable" "(" variable ")";
+   #define statement   ::= <= > += "%""open&Loop[0]""" =>
+                             "loop" "(" expression ")"
+                           <=  > += "%""close[0]""" =>;
 
    #define variable    ::= <= > += "%""open&Variable[0]""" =>
                               identifier
@@ -82,6 +89,24 @@
 
    #define message     ::= <= > += "%""new&MessageToken[1]""" =>
                              "message" "=" ident_quote;
+
+   #define operator    ::= <= > += "%""new&MessageToken[1]""" =>
+                             "operator" "=" operator_quote;
+
+   #define operator    ::= <= > += "%""eval&If[0]""" =>
+                             "operator" "=" "?";
+
+   #define operator_quote ::= <= << += """equal""" =>
+                             "==";
+
+   #define operator_quote ::= <= << += """less""" =>
+                             "<";
+
+   #define operator_quote ::= <= << += """add""" =>
+                             "+";
+
+   #define operator_quote ::= <= << += """subtract""" =>
+                             "-";
 
    #define parameter   ::= <= > += "%""new&ParamToken[1]""" =>
                              "parameter" "=" ident_quote;
