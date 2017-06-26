@@ -8,7 +8,7 @@ extension CorILMethod
     InitLocals = 10h. // Call default constructor on all local variables.
 }
 
-extension ELEMENT_TYPE
+class ELEMENT_TYPE
 {
     END = 00h.
     VOID = 01h.
@@ -46,6 +46,80 @@ extension ELEMENT_TYPE
     MODIFIER = 40h. // Or'd with following element types
     SENTINEL = 41h. // Sentinel for varargs method signature
     PINNED = 45h. // Denotes a local variable that points at a pinned object
+    
+    isDefined int:aType
+    [
+        (aType == 00h)? [ ^true. ].
+        (aType == 01h)? [ ^true. ].
+        (aType == 02h)? [ ^true. ].
+        (aType == 03h)? [ ^true. ].
+        (aType == 04h)? [ ^true. ].
+        (aType == 05h)? [ ^true. ].
+        (aType == 06h)? [ ^true. ].
+        (aType == 07h)? [ ^true. ].
+        (aType == 08h)? [ ^true. ].
+        (aType == 09h)? [ ^true. ].
+        (aType == 0ah)? [ ^true. ].
+        (aType == 0bh)? [ ^true. ].
+        (aType == 0ch)? [ ^true. ].
+        (aType == 0dh)? [ ^true. ].
+        (aType == 0eh)? [ ^true. ].
+        (aType == 0fh)? [ ^true. ].
+        (aType == 10h)? [ ^true. ].
+        (aType == 11h)? [ ^true. ].
+        (aType == 12h)? [ ^true. ].
+        (aType == 14h)? [ ^true. ].
+        (aType == 16h)? [ ^true. ].
+        (aType == 18h)? [ ^true. ].
+        (aType == 19h)? [ ^true. ].
+        (aType == 1bh)? [ ^true. ].
+        (aType == 1ch)? [ ^true. ].
+        (aType == 1dh)? [ ^true. ].
+        (aType == 1fh)? [ ^true. ].
+        (aType == 20h)? [ ^true. ].
+        (aType == 21h)? [ ^true. ].
+        (aType == 40h)? [ ^true. ].
+        (aType == 41h)? [ ^true. ].
+        (aType == 45h)? [ ^true. ].
+        ^false.
+    ]
+    
+    getName int:aType
+    [
+        (aType == 00h)?[ ^ "end". ].
+        (aType == 01h)?[ ^ "void". ].
+        (aType == 02h)?[ ^ "boolean". ].
+        (aType == 03h)?[ ^ "char". ].
+        (aType == 04h)?[ ^ "i1". ].
+        (aType == 05h)?[ ^ "u1". ].
+        (aType == 06h)?[ ^ "i2". ].
+        (aType == 07h)?[ ^ "u2". ].
+        (aType == 08h)?[ ^ "i4". ].
+        (aType == 09h)?[ ^ "u4". ].
+        (aType == 0ah)?[ ^ "i8". ].
+        (aType == 0bh)?[ ^ "u8". ].
+        (aType == 0ch)?[ ^ "r4". ].
+        (aType == 0dh)?[ ^ "r8". ].
+        (aType == 0eh)?[ ^ "string". ].
+        (aType == 0fh)?[ ^ "ptr". ].
+        (aType == 10h)?[ ^ "byref". ].
+        (aType == 11h)?[ ^ "valuetype". ].
+        (aType == 12h)?[ ^ "class". ].
+        (aType == 14h)?[ ^ "array". ].
+        (aType == 16h)?[ ^ "typedbyref". ].
+        (aType == 18h)?[ ^ "i". ].
+        (aType == 19h)?[ ^ "u". ].
+        (aType == 1bh)?[ ^ "fnptr". ].
+        (aType == 1ch)?[ ^ "object". ].
+        (aType == 1dh)?[ ^ "szarray". ].
+        (aType == 1fh)?[ ^ "cmod_reqd". ].
+        (aType == 20h)?[ ^ "cmod_opt". ].
+        (aType == 21h)?[ ^ "internal". ].
+        (aType == 40h)?[ ^ "modifier". ].
+        (aType == 41h)?[ ^ "sentinel". ].
+        (aType == 45h)?[ ^ "pinned". ].      
+        ^"???".
+    ]
 }
 
 extension MethodFlags
@@ -247,7 +321,7 @@ class DoubleInt
     B = theB.
 }
 
-struct TypeData
+class TypeData
 {
     int theSize.
     int theToken.
@@ -255,6 +329,16 @@ struct TypeData
     // ELEMENT_TYPE
     int theElement.
     int theOption.
+    
+    setSize int:aSize [ theSize := aSize. ]
+    setToken int:aToken [ theToken := aToken. ]
+    setElement int:aElement [ theElement := aElement. ]
+    setOption int:aOption [ theOption := aOption. ]
+    
+    size = theSize.
+    token = theToken.
+    element = theElement.
+    option = theOption.
 }
 
 class ILCode

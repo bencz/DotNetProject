@@ -417,6 +417,7 @@ class CLIHeader :: HeaderBase
 	]
  
     metadata = theMetaData.
+    entryPointToken = theEntryPointToken.
 }
 
 // -----------------------------------------------------------------
@@ -472,6 +473,8 @@ class ExceptionHandlingClauses :: HeaderBase
 	int theClassToken. // Meta data token for a type-based exception handler
 	int theFilterOffset. // Offset in method body for filter-based exception handler
 
+    constructor new [ ]
+
     constructor new bytearray:data int:offset
         <= new bytearray:data int:offset;
     [
@@ -488,6 +491,16 @@ class ExceptionHandlingClauses :: HeaderBase
 		theClassToken := $self readInt32 int:20.
 		theFilterOffset := $self readInt32 int:20.
     ]
+    
+    setFlags int:aFlags [ theFlags := aFlags. ]
+    setTryOffset int:aTryOffset [ theTryOffset := aTryOffset. ]
+    setTryLength int:aTryLength [ theTryLength := aTryLength. ]
+    setHandlerOffset int:aHandlerOffset [ theHandlerOffset := aHandlerOffset. ]
+    setHandlerLength int:aHandlerLength [ theHandlerLength := aHandlerLength. ]
+    setClassToken int:aClassToken [ theClassToken := aClassToken. ]
+    setFilterOffset int:aFilterOffset [ theFilterOffset := aFilterOffset. ]
+    
+    flags = theFlags.
 }
 
 // -----------------------------------------------------------------

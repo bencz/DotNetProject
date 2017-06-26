@@ -86,9 +86,13 @@ class TableBase :: HeaderBase
     
     setChildren children:aChild [ theChildren := aChild. ]
     getChildren int:aAt [ ^ theChildren@aAt. ]
+    getChildren int:aAt int:aSAt [ ^ theChildren@aAt@aSAt. ]
+    children = theChildren.
     appendChildren children:aChild int:aAt [ (theChildren@aAt) append:aChild. ]
     
     setParentTable table:aTypeDefTable [ theParentTable := aTypeDefTable. ]
+    getParentTable = theParentTable.
     
     setTag tag:aTag [ theTag := aTag. ]
+    getTag = theTag.
 }

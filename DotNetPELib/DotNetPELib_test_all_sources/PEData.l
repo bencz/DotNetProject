@@ -167,4 +167,9 @@ class PEData
             ].
         ]
     ]
+    
+    data = theData.
+    rva = theRva.
+    indexManager = theIdxm.
+    cliHeader = theCliHeader. 
 }

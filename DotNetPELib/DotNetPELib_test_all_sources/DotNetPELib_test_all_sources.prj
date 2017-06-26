@@ -16,9 +16,9 @@ HeaderBase.l
 TableBase.l   
 CodedIndices.l
 MetadataTables.l
+PEHeaders.l  
 MethodData.l 
 IndexManager.l
-PEHeaders.l  
 StreamHeader.l
 PEData.l
 main.l

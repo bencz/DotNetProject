@@ -6,9 +6,11 @@ import system'collections.
 import extensions.
 import extensions'routines.
 
+const exeFileName = "..\TestExecutables\Test1.exe".
+
 testUtilClass =
 [
-    var br := BinaryFileReader new path:"..\TestExecutables\Test1.exe".
+    var br := BinaryFileReader new path:exeFileName.
     int exeSize := (br stream) length.
     var exeBytes := ByteArray new:exeSize.
     br read bytearray:exeBytes int:exeSize.
@@ -36,7 +38,7 @@ testUtilClass =
 
 testPeFileHeader =
 [
-    var br := BinaryFileReader new path:"..\TestExecutables\Test1.exe".
+    var br := BinaryFileReader new path:exeFileName.
     int exeSize := (br stream) length.
     var exeBytes := ByteArray new:exeSize.
     br read bytearray:exeBytes int:exeSize.
@@ -47,7 +49,7 @@ testPeFileHeader =
 
 testTableBase =
 [
-    var br := BinaryFileReader new path:"..\TestExecutables\Test1.exe".
+    var br := BinaryFileReader new path:exeFileName.
     int exeSize := (br stream) length.
     var exeBytes := ByteArray new:exeSize.
     br read bytearray:exeBytes int:exeSize.
@@ -59,7 +61,7 @@ testTableBase =
 
 testIndexManager = 
 [
-    var br := BinaryFileReader new path:"..\TestExecutables\Test1.exe".
+    var br := BinaryFileReader new path:exeFileName.
     int exeSize := (br stream) length.
     var exeBytes := ByteArray new:exeSize.
     br read bytearray:exeBytes int:exeSize.
@@ -67,11 +69,15 @@ testIndexManager =
     
     var idxManager := IndexManager new bytearray:exeBytes rvaManager:(RVAManager new).
     var r := idxManager getTagSize codedIndices:cdIdcResolutionScope.
+    var type := idxManager readType int:7c9h.
+    
+    var tmp := idxManager getStringsString int:759h.
+    console writeLine:tmp.
 ].
 
 testDoubleInt =
 [
-    var br := BinaryFileReader new path:"..\TestExecutables\Test1.exe".
+    var br := BinaryFileReader new path:exeFileName.
     int exeSize := (br stream) length.
     var exeBytes := ByteArray new:exeSize.
     br read bytearray:exeBytes int:exeSize.
@@ -100,6 +106,28 @@ testOpCodes =
     int x := t count.
 ].
 
+testGetEntryPoint =
+[
+    var br := BinaryFileReader new path:exeFileName.
+    int exeSize := (br stream) length.
+    var exeBytes := ByteArray new:exeSize.
+    br read bytearray:exeBytes int:exeSize.
+    br close.
+    
+    var peData := PEData new.
+    peData setData bytearray:exeBytes.
+    if($nil == (peData cliHeader)) 
+        [ console writeLine:"Error in parsing the EXE". ^$nil. ].
+        
+    var entryPointTable := (peData indexManager) getTable int:((peData cliHeader) entryPointToken).
+    if($nil == entryPointTable)
+        [ console writeLine:"Can not find entry point". ^$nil. ].
+    
+    var entryPointTag := entryPointTable getTag.
+    var name := entryPointTag fullName.
+    console writeLine:"Entry point: ":name.        
+].
+
 program =
 [    
     //testUtilClass eval.
@@ -109,8 +137,9 @@ program =
     //testDoubleInt eval. 
     //testLogicalAnd eval.
     //testOpCodes eval.
+    //testGetEntryPoint eval.
     
-    var br := BinaryFileReader new path:"..\TestExecutables\Test1.exe".
+    var br := BinaryFileReader new path:exeFileName.
     int exeSize := (br stream) length.
     var exeBytes := ByteArray new:exeSize.
     br read bytearray:exeBytes int:exeSize.

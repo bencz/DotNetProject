@@ -207,6 +207,8 @@ class AssemblyRefTable :: TableBase
         theCulture := $self readStringsIndex.
         theHashValue := $self readBlobIndex.
     ]
+    
+    name = theName.
 }
 
 // -----------------------------------------------------------------
@@ -628,8 +630,10 @@ class ImplMapTable :: TableBase
         theMappingFlags := $self readInt16.
         theMemberForwarded := $self readIndex codedIndices:cdIdcMemberForwarded.
         theImportName := $self readStringsIndex.
-//        theImportScope := $self readIndex metadatatables:mdtModuleRef.
+        theImportScope := $self readIndex metadatatables:mdtModuleRef.
     ]
+    
+    memberForwarded = theMemberForwarded.
 }
 
 // -----------------------------------------------------------------
@@ -713,6 +717,10 @@ class MemberRefTable :: TableBase
         theName := $self readStringsIndex.
         theSignature := $self readBlobIndex.
     ]
+    
+    signature = theSignature.
+    name = theName.
+    _class = theClass.
 }
 
 // -----------------------------------------------------------------
@@ -747,8 +755,10 @@ class MethodDefTable :: TableBase
         theParamList := $self readIndex metadatatables:mdtParam.
     ]
     
+    RVA = theRVA.
     signature = theSignature.
     paramList = theParamList.
+    name = theName.
 }
 
 // -----------------------------------------------------------------
@@ -973,6 +983,8 @@ class StandAloneSigTable :: TableBase
     [
         theSignature := $self readBlobIndex.
     ]
+    
+    signature = theSignature.
 }
 
 class TypeDefTable :: TableBase
@@ -1002,6 +1014,8 @@ class TypeDefTable :: TableBase
     
     fieldList = theFieldList.
     methodList = theMethodList.
+    name = theName.
+    namespace = theNamespace.
 }
 
 class TypeRefTable :: TableBase
