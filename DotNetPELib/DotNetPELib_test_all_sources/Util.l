@@ -141,4 +141,26 @@ extension Util
                             ^aRetValue.   
                         ].   
     ]
+    
+    getBrTarget ilCode:aIl
+    [
+        var ilOperType := (aIl opCode) operandType.
+        if(ilOperType == OpOperTypeShortInlineBrTarget)
+        [
+            int address := (aIl address) + (aIl opCodeLength) + (aIl operandLength).
+            byte btOperand := aIl operand.
+            int offset := btOperand.
+            if(offset >= 080h) [ offset := offset - 0100h. ].
+            ^(address + offset).
+        ].
+        if(ilOperType == OpOperTypeShortInlineBrTarget)
+        [
+            int iladdr := aIl address.
+            int iloplength := aIl opCodeLength.
+            int ilopoperlength := aIl operandLength.
+            int operand := aIl operand.
+            ^(iladdr + iloplength + ilopoperlength + operand).
+        ].
+        ^0.
+    ]
 }

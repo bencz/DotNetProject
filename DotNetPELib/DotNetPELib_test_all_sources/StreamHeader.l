@@ -33,9 +33,15 @@ class StreamHeader :: HeaderBase
     [
         ^((theMetadataRoot offset) + theStreamOffset).
     ]
+    
+    getDataSize int:aOffset
+    [
+        ^(Util getDataSize bytearray:theData int:aOffset).
+    ]
         
     setMetadataRoot metadataroot:aMetadataroot [ theMetadataRoot := aMetadataroot. ]
 
     name = theName.
+    size = theSize.
     streamOffset = theStreamOffset.
 }

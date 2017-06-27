@@ -105,15 +105,16 @@ class IndexManager
     
     getIndex codedIndices:aCdIdc int:aValue
     [
-        ^(aValue >> ( $self getTagSize codedIndices:aCdIdc )).
+        int tagSize := $self getTagSize codedIndices:aCdIdc.
+        ^(aValue >> tagSize).
     ]
     
     getIndexType codedIndices:aCdIdc int:aValue
     [
         int size := $self getTagSize codedIndices:aCdIdc.
-        int v := aValue >> size.
+        int v := (aValue >> size) << size.
         var tbl := codedIndexMetaDataTables eval.
-        ^(tbl@aCdIdc@(aValue - 1)).
+        ^(tbl@aCdIdc@(aValue - v)).
     ]
     
     isInt32 metadatatables:aMdt [ ^((theTableRows@aMdt) > ShortNumber max). ]
@@ -203,14 +204,15 @@ class IndexManager
             obj setTag tag:md.
             if(obj _class != 0)
             [
-                obj setParentTable table:($self getToken codedIndices:cdIdcMemberRefParent int:(obj _class)).
+                var tokenTable := $self getToken codedIndices:cdIdcMemberRefParent int:(obj _class).
+                var tableToken := $self getTable int:tokenTable.
+                obj setParentTable table:tableToken.
                 if(md isField)
                 [
                     (obj getParentTable) appendChildren children:obj int:(Children RefField).
                 ];
                 [
                     var pt := obj getParentTable. 
-                    var tx := pt children.
                     pt appendChildren children:obj int:(Children RefMethod).
                 ].
             ].
@@ -226,7 +228,13 @@ class IndexManager
             ].
         ].
         
-        (theTables@mdtNestedClass) run each:(:obj) [ ].
+        (theTables@mdtNestedClass) run each:(:obj)
+        [
+            var nst := listType@((obj nestedClass) - 1). // TypeDefTable
+            var enc := listType@((obj enclosingClass) - 1). // TypeDefTable
+            nst setParentTable table:enc.
+            enc appendChildren children:nst int:(Children DefNested).
+        ].
     ]
     
     makeTree typeDefTbl:aT1 typeDefTbl:aT2
@@ -246,9 +254,9 @@ class IndexManager
         i := f1.
         while(i < f2)
         [
-            var ft := listMethod@(i - 1).
+            var ft := listField@(i - 1).
             aT1 appendChildren children:ft int:(Children DefField).
-            ft setParentTable := aT1.
+            ft setParentTable table:aT1.
             i := i + 1.
         ].
         
@@ -325,13 +333,13 @@ class IndexManager
         [
             if((parentTable class_ref) == TypeDefTable)
             [
-                ^(($self getName typeDefTable:parentTable) + "::" + rt).
+                ^(($self getName typeDefTable:parentTable) + "." + rt).
             ].
         ].
         
         if((aDefTable namespace) != 0)
         [
-            rt := $self getStringsString int:(aDefTable namespace) + "::" + rt.
+            rt := $self getStringsString int:(aDefTable namespace) + "." + rt.
         ].
         ^rt.
     ]
@@ -344,9 +352,9 @@ class IndexManager
         [
             ^(($self getName typeRefTable:tbl) + "." + rt).
         ].
-        if((tbl namespace) != 0)
+        if((aRegTable namespace) != 0)
         [
-            rt := ($self getStringsString int:(tbl namespace)) + "." + rt.
+            rt := ($self getStringsString int:(aRegTable namespace)) + "." + rt.
         ].
         if((tbl class_ref) == AssemblyRefTable)
         [
@@ -417,4 +425,6 @@ class IndexManager
     blob = theBlob.
     
     blobOffset = theBlobOffset.
+    
+    tables = theTables.
 }

@@ -341,16 +341,6 @@ class TypeData
     option = theOption.
 }
 
-class ILCode
-{
-    int theAddress.
-    object theOpCode.
-    int theOpCodeLength.
-    object theOperand.
-    int theOperandLength.
-    bool theIsBrTarget.
-}
-
 extension Children
 {
     int DefNested = 0.

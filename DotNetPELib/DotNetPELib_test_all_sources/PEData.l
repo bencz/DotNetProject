@@ -172,4 +172,5 @@ class PEData
     rva = theRva.
     indexManager = theIdxm.
     cliHeader = theCliHeader. 
+    usrstr = theUsrstr.
 }

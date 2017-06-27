@@ -1,5 +1,6 @@
 import system.
 import system'text.
+import system'routines.
 import system'collections.
 import extensions.
 
@@ -23,6 +24,7 @@ class MethodData
     int theKind.
     int theDataSize.
     list theEHTable.
+    object theOpCodesTable.
     
     constructor new pedata:aPeData table:aMethodDefTable
     [
@@ -47,6 +49,8 @@ class MethodData
         theKind := 0.
         theDataSize := 0.
         theEHTable := $nil.
+        
+        theOpCodesTable := Opcodes getAllOpCodes.
     ]
     
     parse 
@@ -217,6 +221,122 @@ class MethodData
         ].
     ]
     
+    getILCodes
+    [
+        if($nil != theIlCodes)
+            [ ^theIlCodes. ].
+        if($nil == theIlAddress)
+            [ ^$nil. ].
+            
+        int address := theIlAddress.
+        int end := address + theCodeSize.
+        list lst := List new.
+        while(address < end)
+        [
+            var il := $self readIL int:address.
+            lst append:il.
+            address := address + (il opCodeLength) + (il operandLength). 
+        ].
+        
+        theIlCodes := lst.
+        
+        lst run each:(:il)
+        [
+            int addr := Util getBrTarget ilCode:il. 
+            if(addr != 0)
+            [        
+                int i := 0.
+                bool continue := true.
+                while((continue == true) && (i < (theIlCodes length)))
+                [
+                    var il2 := theIlCodes@i.
+                    if((il2 address) == addr)
+                    [
+                        il2 setIsBrTarget bool:true.
+                        continue := false.
+                    ].
+                    i := i + 1.
+                ].
+            ].
+        ].
+        
+        ^lst.
+    ]
+    
+    readIL int:aAddress
+    [
+        int ad := aAddress.
+        var il := ILCode new.
+        il setAddress int:ad.
+        
+        int v := (thePeData data)@ad.
+        ad := ad + 1.
+        
+        il setOpCodeLength int:1.
+        
+        if(v == 0FEh)
+        [
+            v := 0100h + ((thePeData data)@ad).
+            ad := ad + 1.
+            il setOpCodeLength int:2.
+        ].
+        
+        il setOpCode opcode:(theOpCodesTable@v).
+        
+        var ilOpType := (il opCode) operandType.
+        if(ilOpType == OpOperTypeInlineNone)
+        [
+            il setOperand operand:$nil.
+            il setOperandLength int:0.
+            ^il.
+        ]. 
+        
+        if((ilOpType == OpOperTypeShortInlineBrTarget) || 
+           (ilOpType == OpOperTypeShortInlineVar) || 
+           (ilOpType == OpOperTypeShortInlineI))
+        [
+            il setOperand operand:((thePeData data)@ad).
+            il setOperandLength int:1.
+            ^il.
+        ].
+        
+        if(ilOpType == OpOperTypeInlineVar)
+        [
+            il setOperand operand:(Util getInt16 bytearray:(thePeData data) int:ad).
+            il setOperandLength int:2.
+            ^il.
+        ].
+        
+        if((ilOpType == OpOperTypeInlineBrTarget) || (ilOpType == OpOperTypeInlineField) || 
+           (ilOpType == OpOperTypeInlineI) || (ilOpType == OpOperTypeInlineMethod) || 
+           (ilOpType == OpOperTypeInlineSig) || (ilOpType == OpOperTypeInlineString) || 
+           (ilOpType == OpOperTypeInlineTok) || (ilOpType == OpOperTypeInlineType) || 
+           (ilOpType == OpOperTypeShortInlineR))
+        [
+            il setOperand operand:(Util getInt32 bytearray:(thePeData data) int:ad).
+            il setOperandLength int:4.
+            ^il.
+        ].
+        
+        if((ilOpType == OpOperTypeInlineI8) ||
+           (ilOpType == OpOperTypeInlineR))
+        [
+            il setOperand operand:(Util getInt64 bytearray:(thePeData data) int:ad).
+            il setOperandLength int:8.
+            ^il.
+        ].
+        
+        if(ilOpType == OpOperTypeInlineSwitch)
+        [
+            il setOperand operand:(Util getInt32 bytearray:(thePeData data) int:ad).
+            
+            int ilo := il operand.
+            int tst := (4 + ilo * 4).
+            il setOperandLength int:(4 + ilo * 4).
+            ^il.
+        ].
+    ]
+    
     RVA
     [
         if((theTableBase class_ref) == MethodDefTable)
@@ -294,4 +414,6 @@ class MethodData
     ]
     
     setImplMap implMap:aImplMap [ theImplMap := aImplMap. ]
+    
+    localVariablesSig = theLocalVariablesSig.
 }

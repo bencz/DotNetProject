@@ -81,6 +81,8 @@ class TableBase :: HeaderBase
     [
         theIndexManager := aIdxManager.
     ] 
+    indexManager = theIndexManager.
+    
     
     setIndex int:aIndex [ theIndex := aIndex. ]
     
@@ -95,4 +97,6 @@ class TableBase :: HeaderBase
     
     setTag tag:aTag [ theTag := aTag. ]
     getTag = theTag.
+    
+    pointer = thePointer.
 }

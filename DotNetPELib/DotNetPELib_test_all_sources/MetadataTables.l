@@ -510,6 +510,10 @@ class FieldTable :: TableBase
         theName := $self readStringsIndex.
         theSignature := $self readBlobIndex.
     ]
+    
+    flags = theFlags.
+    name = theName.
+    signature = theSignature.
 }
 
 // -----------------------------------------------------------------
@@ -883,6 +887,9 @@ class NestedClassTable :: TableBase
         theNestedClass := $self readIndex metadatatables:mdtTypeDef.
         theEnclosingClass := $self readIndex metadatatables:mdtTypeDef.
     ]
+    
+    nestedClass = theNestedClass.
+    enclosingClass = theEnclosingClass.
 }
 
 // -----------------------------------------------------------------
@@ -1012,10 +1019,12 @@ class TypeDefTable :: TableBase
         theMethodList := $self readIndex metadatatables:mdtMethodDef.
     ]
     
-    fieldList = theFieldList.
-    methodList = theMethodList.
+    flags = theFlags.
     name = theName.
     namespace = theNamespace.
+    extends = theExtends.
+    fieldList = theFieldList.
+    methodList = theMethodList.
 }
 
 class TypeRefTable :: TableBase
@@ -1041,6 +1050,8 @@ class TypeRefTable :: TableBase
     ]
     
     resolutionScope = theResolutionScope.
+    name = theName.
+    namespace = theNamespace.
 }
 
 // -----------------------------------------------------------------
@@ -1050,7 +1061,6 @@ class TypeRefTable :: TableBase
 // an index into the Blob heap) -- this is required, typically,
 // for array operations ・creating, or calling methods on the
 // array class.
-// -----------------------------------------------------------------
 class TypeSpecTable :: TableBase
 {
     int theSignature. // index into the Blob heap, where the blob is formatted as specified in clause 22.2.14
