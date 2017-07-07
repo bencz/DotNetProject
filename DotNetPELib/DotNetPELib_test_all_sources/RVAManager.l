@@ -70,6 +70,7 @@ extension RVAManagerHelper
 {
     getAddress long:rva
     [
-        ^((rva && 0FFFFFFFFh) toInt).
+        // ‭4294967295‬ = 0‭FFFFFFFF‬h
+        ^((rva && 4294967295l) toInt).
     ]
 }
